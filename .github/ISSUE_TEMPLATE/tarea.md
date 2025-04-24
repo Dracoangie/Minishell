@@ -4,8 +4,13 @@ Describe aquí brevemente lo que hay que hacer.
 
 ---
 
-## ✅ Checklist
+## ✅ Subtareas
 
+### 🟢 Completadas
+
+### 🟡 En progreso
+
+### 🔴 Pendientes
 - [ ] Definir subtareas
 - [ ] Implementar solución
 - [ ] Hacer pruebas
@@ -23,16 +28,3 @@ Describe aquí brevemente lo que hay que hacer.
 - [ ] Hecho
 
 ---
-
-## 👥 Responsable(s)
-
-@usuario1  
-@usuario2 *(opcional)*
-
----
-
-## 🔗 Relacionado
-
-- PR: #
-- Issue relacionado: #
-- Documento de referencia: enlace
