@@ -1,16 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 12:33:11 by angnavar          #+#    #+#             */
-/*   Updated: 2025/04/30 12:33:12 by angnavar         ###   ########.fr       */
+/*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
+/*   Updated: 2025/04/30 12:33:01 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int main()
-{
-  return 0;
-}
+#ifndef MINISHELL_H
+
+# define MINISHELL_H
+
+# include <stdio.h>
+# include <unistd.h>
+
+#endif
