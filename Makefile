@@ -6,22 +6,23 @@
 #    By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 10:57:18 by angnavar          #+#    #+#              #
-#    Updated: 2025/04/30 12:31:43 by angnavar         ###   ########.fr        #
+#    Updated: 2025/04/30 15:14:11 by angnavar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
+NAME = minishell.out
 
 # Source and object files
-SRC = main.c
+SRC = main.c src/Minishell.c src/Parse/Parse_input.c src/Free/Free_input.c
 OBJ_DIR = obj
 OBJ = $(SRC:.c=.o)
 OBJ := $(addprefix $(OBJ_DIR)/, $(OBJ))
 
-# Libft
+# Library and include directories
 INCLUDE_DIR := includes
 LIBFT_DIR   := includes/libft
 LIBFT       := $(LIBFT_DIR)/libft.a
+LDLIBS = -lreadline
 
 # Compiler and flags
 CC = cc
@@ -48,7 +49,7 @@ all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ)
 	$(banner)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(LDLIBS) -o $(NAME)
 	@echo "\033[0;32m▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄ Build completed. ▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄\033[0m"
 
 # =========================== LIBFT COMPILATION ============================== #
@@ -60,9 +61,9 @@ $(LIBFT):
 # ============================= FILE COMPILATION =============================== #
 
 $(OBJ_DIR)/%.o: %.c
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(dir $@)
 	@echo "\033[0;34m⚙️  Compiling $<...\033[0m"
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(LDLIBS) -c $< -o $@
 
 # ================================ CLEANING ===================================== #
 
@@ -90,7 +91,7 @@ run: all
 $(NAME)_asan: $(LIBFT) $(OBJ)
 	$(banner)
 	@echo "\033[0;33m🧪 Linking with AddressSanitizer...\033[0m"
-	@$(CC) $(CFLAGS) -g -fsanitize=address $(OBJ) $(LIBFT) -o $(NAME)_asan
+	@$(CC) $(CFLAGS) -g -fsanitize=address $(OBJ) $(LIBFT) $(LDLIBS) -o $(NAME)_asan
 	@echo "\033[0;32m▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄ ASan build ready ▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄\033[0m"
 
 asan: $(NAME)_asan
