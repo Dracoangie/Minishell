@@ -6,9 +6,12 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:33:11 by angnavar          #+#    #+#             */
-/*   Updated: 2025/04/30 12:33:12 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/04/30 12:55:44 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "Minishell.h"
+#include "libft.h"
 
 int main()
 {
