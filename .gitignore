@@ -42,6 +42,7 @@
 *.su
 *.idb
 *.pdb
+*.txt
 
 # Kernel Module Compile Results
 *.mod*
@@ -58,3 +59,5 @@ includes/libft/libft.a
 # Ignore main.c
 main.c
 main.c
+
+.vscode/
