@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/04/30 14:40:30 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:46:06 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ char	**Parse_input(char *input)
 		return (NULL);
 	}
 	i = 0;
-	while (args[i])
+	/*while (args[i])
 	{
 		printf("%s", args[i]);
 		if (args[i + 1])
-			printf(" ");
+			printf("|");
 		i++;
 	}
-	printf("\n");
+	printf("\n");*/
 
 	return (args);
 }
