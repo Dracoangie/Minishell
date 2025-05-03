@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   comands.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:40:01 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/01 15:57:03 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:55:24 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*search_executable_in_paths(char *cmd, char **paths)
 	return (NULL);
 }
 
-char	*get_command_path(char *cmd, char **envp)
+char	*get_cmd_path(char *cmd, char **envp)
 {
 	char	**paths;
 	int		i;
@@ -57,56 +57,28 @@ char	*get_command_path(char *cmd, char **envp)
 	return (search_executable_in_paths(cmd, paths));
 }
 
-void	execute_command(char *cmd, char **envp, t_pipex *pipex)
+void	execute_command(char *cmd, char **envp, t_shell *mn_shell)
 {
 	char	**args;
 	char	*path;
 
 	args = ft_split(cmd, ' ');
-	path = get_command_path(args[0], envp);
+	path = get_cmd_path(args[0], envp);
 	if (!path || access(path, X_OK) != 0)
 	{
-		write(2, "zsh: command not found: ", 24);
 		write(2, args[0], ft_strlen(args[0]));
-		write(2, "\n", 1);
+		print_error(mn_shell, ": command not found", 127);
 		free_args(args);
 		free(path);
-		free(pipex->childs);
-		close_pipes(pipex);
-		exit(127);
+		free(mn_shell->pipex->childs);
+		close_pipes(mn_shell);
 	}
-	if (execve(path, args, envp) == -1)
+	else if (execve(path, args, envp) == -1)
 	{
-		perror("execve error");
+		print_error(mn_shell, "execve error", EXIT_FAILURE);
 		free_args(args);
 		free(path);
-		free(pipex->childs);
-		close_pipes(pipex);
-		exit(EXIT_FAILURE);
-	}
-}
-
-void	execute_command_np(char *cmd, char **envp)
-{
-	char	**args;
-	char	*path;
-
-	args = ft_split(cmd, ' ');
-	path = get_command_path(args[0], envp);
-	if (!path || access(path, X_OK) != 0)
-	{
-		write(2, "zsh: command not found: ", 24);
-		write(2, args[0], ft_strlen(args[0]));
-		write(2, "\n", 1);
-		free_args(args);
-		free(path);
-		exit(127);
-	}
-	if (execve(path, args, envp) == -1)
-	{
-		perror("execve error");
-		free_args(args);
-		free(path);
-		exit(EXIT_FAILURE);
+		free(mn_shell->pipex->childs);
+		close_pipes(mn_shell);
 	}
 }

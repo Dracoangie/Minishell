@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/01 15:36:53 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:33:45 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,33 +24,15 @@
 # include <readline/history.h>
 #include "libft.h"
 
-//Parse
-char **Parse_input(char *input);
-int check_exit_command(char *input);
-
+//structs
 typedef struct s_command {
 	char	**args;
 	char	*path;
 	int		input_fd;
 	int		output_fd;
-}	t_command;
+}	t_cmd;
 
-//Free
-int free_input(char *input);
-int free_args(char **args);
-void free_all(char *input, char **args);
 
-//Minishell
-void Minishell(char **envp);
-
-typedef struct s_minishell
-{
-	t_command	*cmds;
-	int			cmds_len;
-	int			last_exit_code;
-}	t_minishell;
-
-//Pipex
 typedef struct s_pipex
 {
 	pid_t	*childs;
@@ -68,15 +50,44 @@ typedef struct s_heredoc
 	size_t	size;
 }			t_heredoc;
 
-void		execute_command_np(char *cmd, char **envp);
-void		execute_command(char *cmd, char **envp, t_pipex *pipex);
-void		pipex(char **argv, char **envp, t_minishell *mn_shell, int here_doc_mode);
+typedef struct s_shell
+{
+	t_cmd	*cmds;
+	int			cmds_len;
+	int			last_exit_code;
+	char		**envp;
+	t_pipex		*pipex;
+}	t_shell;
+
+//Errors
+void	print_error(t_shell *shell, char *msg, int err_code);
+void	print_error_and_exit(t_shell *shell, char *msg);
+
+//Free
+int free_input(char *input);
+int free_args(char **args);
+void free_shell(t_shell *shell);
+void free_all(char *input, char **args, t_shell *shell);
+
+//Parse
+char **Parse_input(char *input);
+int check_exit_cmd(char *input);
+//t_cmd *parse_input(char *input);
+
+//Utils
 int			ft_strcmp(const char *s1, const char *s2);
-void		here_doc(char *delimiter);
 int			ft_getline(char **line, size_t *len, int fd);
-void		do_here_doc(int argc, char **argv, char **envp);
-void		here_doc_open_files(t_pipex *pipex, char **argv);
-void		open_files(t_pipex *pipex, char **argv);
-void		close_pipes(t_pipex *pipex);
+
+//Pipex
+
+void		execute_command(char *cmd, char **envp, t_shell *mn_shell);
+int			here_doc_open_files(t_shell *mn_shell, char **argv);
+int			open_files(t_shell *mn_shell, char **argv);
+void		close_pipes(t_shell *mn_shell);
+
+void		pipex(char **argv, char **envp, t_shell *mn_shell, int here_doc_mode);
+
+//Minishell
+void Minishell(char **envp);
 
 #endif
