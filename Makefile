@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+         #
+#    By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 10:57:18 by angnavar          #+#    #+#              #
-#    Updated: 2025/04/30 15:14:11 by angnavar         ###   ########.fr        #
+#    Updated: 2025/05/04 19:59:24 by kpineda-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell.out
 
 # Source and object files
-SRC = main.c src/Minishell.c src/Parse/Parse_input.c src/Free/Free_input.c
+SRC = src/main.c src/Minishell.c src/Parse/Parse_input.c src/Free/Free_input.c src/signal/signals.c
 OBJ_DIR = obj
 OBJ = $(SRC:.c=.o)
 OBJ := $(addprefix $(OBJ_DIR)/, $(OBJ))

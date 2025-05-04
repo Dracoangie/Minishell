@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/04/30 15:22:23 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:50:37 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 # include <stdio.h>
 # include <unistd.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 #include "libft.h"
@@ -30,5 +31,9 @@ int free_args(char **args);
 void free_all(char *input, char **args);
 //Minishell
 void Minishell();
+
+//signals
+void	handle_sigint(int sig);
+void	handle_signals(void);
 
 #endif
