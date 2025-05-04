@@ -6,13 +6,13 @@
 /*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 14:27:45 by tu_nombre_d       #+#    #+#             */
-/*   Updated: 2025/05/03 14:48:28 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/03 18:42:13 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
-void	here_doc(char *delimiter);
+/*void	here_doc(char *delimiter);
 
 int	here_doc_open_files(t_shell *mn_shell, char **argv)
 {
@@ -94,4 +94,4 @@ void	here_doc(char *delimiter)
     close(hd_data.pipe_fd[1]);
     dup2(hd_data.pipe_fd[0], STDIN_FILENO);
     close(hd_data.pipe_fd[0]);
-}
+}*/

@@ -6,7 +6,7 @@
 /*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/03 15:26:33 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/04 21:14:15 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_shell *init_shell(char **envp)
 	if (!shell)
 		return (NULL);
 	shell->cmds = NULL;
-	shell->cmds_len = 0;
+	shell->n_cmds = 0;
 	shell->last_exit_code = 0;
 	shell->envp = envp;
 	shell->pipex = NULL	;
@@ -67,50 +67,25 @@ void	Minishell(char **envp)
 			free_input(input);
 			continue ;
 		}
-		mn_shell->cmds_len = 0;
-		while(args[mn_shell->cmds_len] != NULL)
-			mn_shell->cmds_len++;
-		free_args(args);
-		args = malloc(sizeof(char *) * 6);
-		args[0] = strdup("args");
-		args[1] = strdup("in.txt");
-		args[2] = strdup("cat");
-		args[3] = strdup("cat");
-		args[4] = strdup("out.txt");
-		args[5] = NULL;
-		mn_shell->cmds_len = 2;
-		pipex(args, envp, mn_shell, 0);
+		mn_shell->n_cmds = 0;
+		while(args[mn_shell->n_cmds] != NULL)
+			mn_shell->n_cmds++;
+		t_cmd *cmd_list;
+		cmd_list = malloc(sizeof(t_cmd));
+		cmd_list->args = (char *[]){"ls", "-l", NULL};
+		cmd_list->path = get_cmd_path(cmd_list->args[0], envp);
+		cmd_list->input_fd = STDIN_FILENO;
+		cmd_list->output_fd = -1;
+		cmd_list->next = malloc(sizeof(t_cmd));
+		cmd_list->next->args = (char *[]){"cat", "-e", NULL};
+		cmd_list->next->path = get_cmd_path(cmd_list->next->args[0], envp);
+		cmd_list->next->input_fd = -1;
+		cmd_list->next->output_fd = STDOUT_FILENO;
+		cmd_list->next->next = NULL;
+		mn_shell->cmds = cmd_list;
+		mn_shell->n_cmds = 2;
+		pipex(mn_shell);
 		free_all(input, args, mn_shell);
 	}
 	free(mn_shell);
 }
-/*
-	// Initialize the shell
-	t_shell *shell = init_shell(argc, argv, envp);
-	if (!shell)
-		return (1);
-
-	// Main loop
-	while (1)
-	{
-		// Display prompt and read input
-		char *input = read_input(shell);
-		if (!input)
-			break;
-
-		// Parse the input into commands
-		t_cmd *commands = parse_input(input);
-		free(input);
-
-		if (!commands)
-			continue;
-
-		// Execute the commands
-		execute_commands(shell, commands);
-
-		// Free the command list
-		free_commands(commands);
-	}
-
-	free_shell(shell);
-	return (0);*/

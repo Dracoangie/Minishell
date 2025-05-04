@@ -6,7 +6,7 @@
 /*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/03 15:33:45 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/04 20:37:36 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,12 @@
 # include <readline/history.h>
 #include "libft.h"
 
+typedef struct s_cmd t_cmd;
+
 //structs
-typedef struct s_command {
+typedef struct s_cmd
+{
+	t_cmd	*next;
 	char	**args;
 	char	*path;
 	int		input_fd;
@@ -38,8 +42,6 @@ typedef struct s_pipex
 	pid_t	*childs;
 	int		file[2];
 	int		**pipes;
-	int		cmd_len;
-	int		here_doc_mode;
 }			t_pipex;
 
 typedef struct s_heredoc
@@ -53,7 +55,7 @@ typedef struct s_heredoc
 typedef struct s_shell
 {
 	t_cmd	*cmds;
-	int			cmds_len;
+	int			n_cmds;
 	int			last_exit_code;
 	char		**envp;
 	t_pipex		*pipex;
@@ -81,11 +83,12 @@ int			ft_getline(char **line, size_t *len, int fd);
 //Pipex
 
 void		execute_command(char *cmd, char **envp, t_shell *mn_shell);
-int			here_doc_open_files(t_shell *mn_shell, char **argv);
-int			open_files(t_shell *mn_shell, char **argv);
+//int			here_doc_open_files(t_shell *mn_shell, char **argv);
+int			open_files(t_shell *mn_shell);
 void		close_pipes(t_shell *mn_shell);
 
-void		pipex(char **argv, char **envp, t_shell *mn_shell, int here_doc_mode);
+char	*get_cmd_path(char *cmd, char **envp);
+void	pipex(t_shell *mn_shell);
 
 //Minishell
 void Minishell(char **envp);

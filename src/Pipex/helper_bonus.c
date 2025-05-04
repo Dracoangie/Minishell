@@ -6,7 +6,7 @@
 /*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:42:42 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/03 14:47:33 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/04 20:35:14 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,31 +85,36 @@ int	ft_getline(char **line, size_t *len, int fd)
 	return (pos);
 }
 
-int	open_files(t_shell *mn_shell, char **argv)
+int	open_files(t_shell *mn_shell)
 {
-    if (!mn_shell->pipex->here_doc_mode)
+    t_cmd	*current;
+
+    current = mn_shell->cmds;
+    while (current)
     {
-        mn_shell->pipex->file[0] = open(argv[1], O_RDONLY);
-        if (mn_shell->pipex->file[0] < 0)
+        if (current->input_fd == STDIN_FILENO)
+            mn_shell->pipex->file[0] = STDIN_FILENO;
+        else if (current->input_fd != -1)
         {
-            perror(argv[1]);
             mn_shell->pipex->file[0] = open("/dev/null", O_RDONLY);
             if (mn_shell->pipex->file[0] < 0)
-				return (0);
+            {
+                perror("/dev/null");
+                return (0);
+            }
         }
-        mn_shell->pipex->file[1] = open(argv[2 + mn_shell->pipex->cmd_len],
-                O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (current->output_fd == STDOUT_FILENO)
+            mn_shell->pipex->file[1] = current->output_fd;
+        else if (current->output_fd != -1)
+        {
+            mn_shell->pipex->file[1] = open("/dev/null", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            if (mn_shell->pipex->file[1] < 0)
+            {
+                perror("/dev/null");
+                return (0);
+            }
+        }
+        current = current->next;
     }
-    else
-    {
-        mn_shell->pipex->file[0] = STDIN_FILENO;
-        mn_shell->pipex->file[1] = open(argv[2 + mn_shell->pipex->cmd_len],
-                O_WRONLY | O_CREAT | O_APPEND, 0644);
-    }
-    if (mn_shell->pipex->file[1] < 0)
-    {
-        perror(argv[2 + mn_shell->pipex->cmd_len]);
-		return (0);
-    }
-	return (1);
+    return (1);
 }
