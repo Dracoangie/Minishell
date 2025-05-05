@@ -6,7 +6,7 @@
 /*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:38 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/03 14:45:11 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/04 22:46:55 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,28 @@ int free_args(char **args)
 	return (0);
 }
 
+void	free_cmds(t_cmd *cmds)
+{
+    t_cmd	*current;
+    t_cmd	*next;
+
+    current = cmds;
+    while (current)
+    {
+        next = current->next;
+        if (current->path)
+            free(current->path);
+        free(current);
+		current = next;
+    }
+}
+
 void free_shell(t_shell *shell)
 {
 	if (shell)
 	{
 		if (shell->cmds)
-			free(shell->cmds);
+			free_cmds(shell->cmds);
 		if (shell->pipex)
 			free(shell->pipex);
 	}

@@ -6,7 +6,7 @@
 /*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/04 21:14:15 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/04 23:03:40 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	Minishell(char **envp)
 	char	*input;
 	char	**args;
 	t_shell *mn_shell;
+	t_cmd *cmd_list;
 
 	mn_shell = init_shell(envp);
 	if (!mn_shell)
@@ -70,14 +71,13 @@ void	Minishell(char **envp)
 		mn_shell->n_cmds = 0;
 		while(args[mn_shell->n_cmds] != NULL)
 			mn_shell->n_cmds++;
-		t_cmd *cmd_list;
 		cmd_list = malloc(sizeof(t_cmd));
 		cmd_list->args = (char *[]){"ls", "-l", NULL};
 		cmd_list->path = get_cmd_path(cmd_list->args[0], envp);
 		cmd_list->input_fd = STDIN_FILENO;
 		cmd_list->output_fd = -1;
 		cmd_list->next = malloc(sizeof(t_cmd));
-		cmd_list->next->args = (char *[]){"cat", "-e", NULL};
+		cmd_list->next->args = (char *[]){"cat", "in.txt", NULL};
 		cmd_list->next->path = get_cmd_path(cmd_list->next->args[0], envp);
 		cmd_list->next->input_fd = -1;
 		cmd_list->next->output_fd = STDOUT_FILENO;
