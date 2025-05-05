@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:40:01 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/05 11:42:42 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:19:34 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,9 @@ char	*get_cmd_path(char *cmd, char **envp)
 	return (search_executable_in_paths(cmd, paths));
 }
 
-void	execute_command(char *cmd, char **envp, t_shell *mn_shell)
+void	check_cmd(t_shell *mn_shell, char	*path, char	**args)
 {
-	char	**args;
-	char	*path;
-
-	args = ft_split(cmd, ' ');
-	path = get_cmd_path(args[0], envp);
+	path = get_cmd_path(args[0], mn_shell->envp);
 	if (!path || access(path, X_OK) != 0)
 	{
 		write(2, args[0], ft_strlen(args[0]));
@@ -72,13 +68,20 @@ void	execute_command(char *cmd, char **envp, t_shell *mn_shell)
 		free(path);
 		free(mn_shell->pipex->childs);
 		close_pipes(mn_shell);
+		mn_shell->last_exit_code = 127;
 	}
-	else if (execve(path, args, envp) == -1)
+}
+
+void	execute_command(t_cmd *cmd, t_shell *mn_shell)
+{
+
+	if (execve(cmd->path, cmd->args, mn_shell->envp) == -1)
 	{
 		print_error(mn_shell, "execve error", EXIT_FAILURE);
-		free_args(args);
-		free(path);
+		free_args(cmd->args);
+		free(cmd->path);
 		free(mn_shell->pipex->childs);
 		close_pipes(mn_shell);
+		mn_shell->last_exit_code = EXIT_FAILURE;
 	}
 }

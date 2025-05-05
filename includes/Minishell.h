@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/05 12:46:36 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:20:42 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,9 @@ typedef struct s_cmd
 	int		output_fd;
 }	t_cmd;
 
-
 typedef struct s_pipex
 {
 	pid_t	*childs;
-	int		**pipes;
 }			t_pipex;
 
 typedef struct s_heredoc
@@ -78,7 +76,7 @@ void free_all(char *input, t_shell *shell);
 
 //Parse
 t_cmd	*Parse_input(char *input, t_shell *mn_shell);
-int check_exit_cmd(char *input);
+int		check_exit_cmd(char *input);
 
 //Utils
 int			ft_strcmp(const char *s1, const char *s2);
@@ -86,8 +84,7 @@ int			ft_getline(char **line, size_t *len, int fd);
 
 //Pipex
 
-void		execute_command(char *cmd, char **envp, t_shell *mn_shell);
-//int			here_doc_open_files(t_shell *mn_shell, char **argv);
+void	execute_command(t_cmd *cmd, t_shell *mn_shell);
 int			open_files(t_shell *mn_shell);
 void		close_pipes(t_shell *mn_shell);
 

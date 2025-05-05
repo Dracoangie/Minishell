@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/05 11:58:25 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:25:05 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,36 @@ void	Minishell(char **envp)
 			print_error(mn_shell, "readline error", 1);
 			break ;
 		}
-		if (check_exit_cmd(input))
+		else if (check_exit_cmd(input))
 			break ;
+		else if (input[0] == '\0')
+		{
+			free(input);
+			continue ;
+		}
 		add_history(input);
+		int input_fd = open("in.txt", O_RDONLY);
+		//int output_fd = open("out.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		
 		cmd_list = malloc(sizeof(t_cmd));
-		cmd_list->args = (char *[]){"ls", "-l", NULL};
+		cmd_list->args = (char *[]){"echo", "hola", NULL};
 		cmd_list->path = get_cmd_path(cmd_list->args[0], envp);
 		cmd_list->input_fd = STDIN_FILENO;
-		cmd_list->output_fd = -1;
-		cmd_list->next = malloc(sizeof(t_cmd));
-		cmd_list->next->args = (char *[]){"cat", "-e", NULL};
+		cmd_list->output_fd = STDOUT_FILENO;
+		cmd_list->next = NULL;
+		/*cmd_list->next = malloc(sizeof(t_cmd));
+		cmd_list->next->args = (char *[]){"cat", NULL};
 		cmd_list->next->path = get_cmd_path(cmd_list->next->args[0], envp);
-		cmd_list->next->input_fd = -1;
-		cmd_list->next->output_fd = STDOUT_FILENO;
-		cmd_list->next->next = NULL;
+		cmd_list->next->input_fd = input_fd;
+		cmd_list->next->output_fd = -1;
+		cmd_list->next->next = malloc(sizeof(t_cmd));
+		cmd_list->next->next->args = (char *[]){"cat", "-e", NULL};
+		cmd_list->next->next->path = get_cmd_path(cmd_list->next->next->args[0], envp);
+		cmd_list->next->next->input_fd = -1;
+		cmd_list->next->next->output_fd = STDOUT_FILENO;
+		cmd_list->next->next->next = NULL;*/
 		mn_shell->cmds = cmd_list;
-		mn_shell->n_cmds = 2;
+		mn_shell->n_cmds = count_cmds(cmd_list);
 		/*cmd_list = Parse_input(input, mn_shell);
 		if (!cmd_list)
 		{
@@ -96,7 +109,6 @@ void	Minishell(char **envp)
 		cmd_list->input_fd = "in.txt";
 		cmd_list->next->output_fd = STDOUT_FILENO;
 		mn_shell->cmds = cmd_list;
-		mn_shell->n_cmds = count_cmds(cmd_list);
 		if (mn_shell->n_cmds == 0)
 		{
 			free(input);
@@ -104,8 +116,11 @@ void	Minishell(char **envp)
 		}*/
 		pipex(mn_shell);
 		free_all(input, mn_shell);
+		close(input_fd);
+		//close(output_fd);
 	}
 	free(mn_shell);
+	clear_history();
 }
 
 //posible main function
