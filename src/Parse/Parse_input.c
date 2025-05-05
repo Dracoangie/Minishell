@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/05 11:40:36 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:58:28 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,12 @@ int	cmd_count(const char *s, char c)
 
 t_cmd	*ft_split_to_cmds(char const *s, char c)
 {
-    t_cmd	*head;
-    t_cmd	*current;
+    t_cmd	*head = NULL; // Inicializa head a NULL
+    t_cmd	*current = NULL; // Inicializa current a NULL
     t_cmd	*new_cmd;
     int		i;
     int		start;
 
-    head = NULL;
     i = 0;
     while (s[i])
     {
