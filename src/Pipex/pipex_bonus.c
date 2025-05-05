@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
+/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 14:19:04 by tu_nombre_d       #+#    #+#             */
-/*   Updated: 2025/05/04 21:46:26 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/05 12:46:49 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		create_pipes(t_shell *mn_shell)
 		i++;
 	}
 	return (1);
-	}
+}
 
 static void	set_dups_close(t_shell *mn_shell, int i)
 {
@@ -60,13 +60,13 @@ static void	set_dups_close(t_shell *mn_shell, int i)
 	j = 0;
 	if (i == 0)
 	{
-		dup2(mn_shell->pipex->file[0], STDIN_FILENO);
+		dup2(mn_shell->cmds->input_fd, STDIN_FILENO);
 		dup2(mn_shell->pipex->pipes[i][1], STDOUT_FILENO);
 	}
 	else if (i == mn_shell->n_cmds - 1)
 	{
 		dup2(mn_shell->pipex->pipes[i - 1][0], STDIN_FILENO);
-		dup2(mn_shell->pipex->file[1], STDOUT_FILENO);
+		dup2(mn_shell->cmds->next->output_fd, STDOUT_FILENO);
 	}
 	else
 	{
@@ -120,26 +120,26 @@ void	pipex(t_shell *mn_shell)
 		print_error(mn_shell, "malloc error", EXIT_FAILURE);
 		return;
 	}
-	if (!open_files(mn_shell))
+	/*if (!open_files(mn_shell))
 	{
 		free(mn_shell->pipex);
 		mn_shell->pipex = NULL;
 		return;
-	}
+	}*/
 	if (!create_pipes(mn_shell))
 	{
 		free(mn_shell->pipex);
 		mn_shell->pipex = NULL;
 		return;
 	}
-	dup2(mn_shell->pipex->file[0], STDIN_FILENO);
+	dup2(mn_shell->cmds->input_fd, STDIN_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 	set_childs(mn_shell);
 	close_pipes(mn_shell);
-	if (mn_shell->pipex->file[0] != STDIN_FILENO)
-		close(mn_shell->pipex->file[0]);
-	if (mn_shell->pipex->file[1] != STDOUT_FILENO)
-		close(mn_shell->pipex->file[1]);
+	if (mn_shell->cmds->input_fd != STDIN_FILENO)
+		close(mn_shell->cmds->input_fd);
+	if (mn_shell->cmds->next->output_fd != STDOUT_FILENO)
+		close(mn_shell->cmds->next->output_fd);
 	i = 0;
 	while (i < mn_shell->n_cmds)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
+/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/05 00:30:45 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/05 12:46:36 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ typedef struct s_cmd
 typedef struct s_pipex
 {
 	pid_t	*childs;
-	int		file[2];
 	int		**pipes;
 }			t_pipex;
 
@@ -61,20 +60,25 @@ typedef struct s_shell
 	t_pipex		*pipex;
 }	t_shell;
 
+//Init
+t_shell	*init_shell(char **envp);
+t_cmd	*init_cmd(char **args);
+int		count_cmds(t_cmd *cmds);
+
 //Errors
 void	print_error(t_shell *shell, char *msg, int err_code);
 void	print_error_and_exit(t_shell *shell, char *msg);
 
 //Free
 int free_input(char *input);
-int free_args(char **args);
+int	free_args(char **args);
+int	free_strn(char **str, int j);
 void free_shell(t_shell *shell);
-void free_all(char *input, char **args, t_shell *shell);
+void free_all(char *input, t_shell *shell);
 
 //Parse
-char **Parse_input(char *input);
+t_cmd	*Parse_input(char *input, t_shell *mn_shell);
 int check_exit_cmd(char *input);
-//t_cmd *parse_input(char *input);
 
 //Utils
 int			ft_strcmp(const char *s1, const char *s2);
