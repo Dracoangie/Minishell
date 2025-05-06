@@ -6,7 +6,7 @@
 /*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:59:14 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/06 20:47:26 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/06 22:02:00 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,27 @@ void	execute_env(char **envp, char *command)
 		}
 	}
 	
+}
+
+char **execute_unset(char **envp, char *command)
+{
+	int		i;
+	char	**out;
+
+	out = ft_split(command, ' ');
+	if (!out)
+		return (NULL);
+	if (!out[1])
+	{
+		Free_args(out);
+		return (envp);		
+	}
+	i = 1;
+	while (out[i])
+	{
+		envp = delete_env_var(envp, out[i]);
+		i++;
+	}
+	Free_args(out);
+	return (envp);
 }
