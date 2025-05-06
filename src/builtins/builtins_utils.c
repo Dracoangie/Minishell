@@ -1,50 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 19:59:14 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/06 20:47:26 by kpineda-         ###   ########.fr       */
+/*   Created: 2025/05/06 20:27:35 by kpineda-          #+#    #+#             */
+/*   Updated: 2025/05/06 20:33:33 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
-void	execute_pwd(void)
-{
-	char	*pwd;
-	
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-	{
-		perror("pwd");
-		return ;
-	}
-	printf("%s\n", pwd);
-	free(pwd);
-}
-
-void	execute_env(char **envp, char *command)
+int	find_env_line(char **envp, char *key)
 {
 	int	i;
-	int	index;
-	
+	int	key_len;
+
+	key_len = ft_strlen(key);
 	i = 0;
-	index = find_env_line(envp, "PATH");
-	if	(index == -1 && ft_strcmp(command, "/bin/env") != 0)
+	while (envp[i])
 	{
-		ft_putstr_fd("env: command not found\n", 2);
-		return ;
+		if (ft_strncmp(envp[i], key, key_len) == 0 && envp[i][key_len] == '=')
+			return (i);
+		i++;
 	}
-	else
-	{
-		while (envp[i])
-		{
-			printf("%s\n", envp[i]);
-			i++;
-		}
-	}
-	
+	return (-1);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+         #
+#    By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 10:57:18 by angnavar          #+#    #+#              #
-#    Updated: 2025/05/06 14:18:46 by angnavar         ###   ########.fr        #
+#    Updated: 2025/05/06 20:28:08 by kpineda-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ NAME = minishell.out
 SRC = main.c src/Minishell.c src/Parse/Parse_input.c src/Parse/Parse_files.c \
 	src/Exec/Cmds.c src/Exec/Helper.c src/Exec/Here_doc.c src/Exec/Exec_cmds.c \
 	src/Errors.c \
-	src/Free/Free_shell.c src/Free/Free_input.c
+	src/Free/Free_shell.c src/Free/Free_input.c \
+	src/builtins/builtins.c src/builtins/builtins_utils.c
 OBJ_DIR = obj
 OBJ = $(SRC:.c=.o)
 OBJ := $(addprefix $(OBJ_DIR)/, $(OBJ))

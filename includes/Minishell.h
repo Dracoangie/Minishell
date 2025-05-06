@@ -6,7 +6,7 @@
 /*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/06 20:08:18 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/06 20:48:39 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,9 @@ void Minishell(char **envp);
 
 //Builtins
 void	execute_pwd(void);
+void	execute_env(char **envp, char *command);
+
+//Builtins_utils
+int	find_env_line(char **envp, char *key);
 
 #endif
