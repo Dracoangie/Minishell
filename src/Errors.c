@@ -12,13 +12,13 @@
 
 #include "Minishell.h"
 
-void	print_error(t_shell *shell, char *msg, int err_code)
+void	Print_error(t_shell *shell, char *msg, int err_code)
 {
 	write(2, msg, ft_strlen(msg));
     write(2, "\n", 1);
 	shell->last_exit_code = err_code;
 }
-void print_error_and_exit(t_shell *shell, char *msg)
+void Print_error_and_exit(t_shell *shell, char *msg)
 {
 	write(2, msg, ft_strlen(msg));
     write(2, "\n", 1);

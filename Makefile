@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+         #
+#    By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 10:57:18 by angnavar          #+#    #+#              #
-#    Updated: 2025/05/03 14:22:56 by tu_nombre_d      ###   ########.fr        #
+#    Updated: 2025/05/06 13:20:07 by angnavar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell.out
 
 # Source and object files
 SRC = main.c src/Minishell.c src/Parse/Parse_input.c src/Free/Free_input.c \
-	src/Pipex/comands.c src/Pipex/helper_bonus.c src/Pipex/here_doc.c src/Pipex/pipex_bonus.c \
+	src/Exec/Cmds.c src/Exec/Helper.c src/Exec/Here_doc.c src/Exec/Exec_cmds.c \
 	src/Errors.c
 OBJ_DIR = obj
 OBJ = $(SRC:.c=.o)

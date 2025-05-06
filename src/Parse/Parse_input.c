@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/06 12:56:53 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:15:26 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft.h"
 
 
-int	check_exit_cmd(char *input)
+int	Check_exit_cmd(char *input)
 {
 	if (ft_strncmp(input, "exit", 4) == 0)
 	{
@@ -68,7 +68,7 @@ t_cmd	*ft_split_to_cmds(char const *s, char c)
                 return (NULL);
             char **args = ft_split(cmd_str, ' ');
             free(cmd_str);
-            new_cmd = init_cmd(args);
+            new_cmd = Init_cmd(args);
             if (!new_cmd)
                 return (NULL);
             if (!head)
@@ -82,7 +82,7 @@ t_cmd	*ft_split_to_cmds(char const *s, char c)
     }
     return (head);
 }
-void remove_arg(char **args, int index)
+void Remove_arg(char **args, int index)
 {
     int i;
 
@@ -95,7 +95,7 @@ void remove_arg(char **args, int index)
     }
 }
 
-int command_uses_files(const char *cmd)
+int Command_uses_files(const char *cmd)
 {
     const char *file_commands[] = {"cat", "ls", "cp", "mv", NULL};
     for (int i = 0; file_commands[i]; i++)
@@ -106,7 +106,7 @@ int command_uses_files(const char *cmd)
     return (0);
 }
 
-int check_files(t_shell *mn_shell, t_cmd *current, 	t_cmd	*cmds)
+int Parse_files(t_shell *mn_shell, t_cmd *current, 	t_cmd	*cmds)
 {
     int i;
 
@@ -124,14 +124,14 @@ int check_files(t_shell *mn_shell, t_cmd *current, 	t_cmd	*cmds)
 			if (current->input_fd < 0)
 			{
 				if (errno == ENOENT)
-					return (print_error(mn_shell, "Error: File not found", 2), 0);
+					return (Print_error(mn_shell, "Error: File not found", 2), 0);
 				else if (errno == EACCES)
-					return (print_error(mn_shell, "Error: Permission denied", 1), 0);
+					return (Print_error(mn_shell, "Error: Permission denied", 1), 0);
 				else
-					return (print_error(mn_shell, "Error: Failed to open file", 1), 0);
+					return (Print_error(mn_shell, "Error: Failed to open file", 1), 0);
 			}
-            remove_arg(current->args, i);
-			remove_arg(current->args, i);
+            Remove_arg(current->args, i);
+			Remove_arg(current->args, i);
 		}
 		else if (current->args[i][0] == '>')
 		{
@@ -139,26 +139,26 @@ int check_files(t_shell *mn_shell, t_cmd *current, 	t_cmd	*cmds)
 			if (current->output_fd < 0)
 			{
 				if (errno == ENOENT)
-					return (print_error(mn_shell, "Error: File not found", 2), 0);
+					return (Print_error(mn_shell, "Error: File not found", 2), 0);
 				else if (errno == EACCES)
-					return (print_error(mn_shell, "Error: Permission denied", 1), 0);
+					return (Print_error(mn_shell, "Error: Permission denied", 1), 0);
 				else
-					return (print_error(mn_shell, "Error: Failed to open file", 1), 0);
+					return (Print_error(mn_shell, "Error: Failed to open file", 1), 0);
 			}
-            remove_arg(current->args, i);
-			remove_arg(current->args, i);
+            Remove_arg(current->args, i);
+			Remove_arg(current->args, i);
 		}
-		else if(command_uses_files(current->args[0]))
+		else if(Command_uses_files(current->args[0]))
 		{
 			current->input_fd = open(current->args[i], O_RDONLY);
 			if (current->input_fd < 0)
 			{
 				if (errno == ENOENT)
-					return (print_error(mn_shell, "Error: File not found", 2), 0);
+					return (Print_error(mn_shell, "Error: File not found", 2), 0);
 				else if (errno == EACCES)
-					return (print_error(mn_shell, "Error: Permission denied", 1), 0);
+					return (Print_error(mn_shell, "Error: Permission denied", 1), 0);
 				else
-					return (print_error(mn_shell, "Error: Failed to open file", 1), 0);
+					return (Print_error(mn_shell, "Error: Failed to open file", 1), 0);
 			}
 		}
         i++;
@@ -170,7 +170,7 @@ int check_files(t_shell *mn_shell, t_cmd *current, 	t_cmd	*cmds)
     return (1);
 }
 
-int	builtin_cmds(char *input)
+int	Builtin_cmds(char *input)
 {
 	if (ft_strcmp(input, "echo") == 0)
 		return (1);
@@ -196,17 +196,17 @@ t_cmd	*Parse_input(char *input, t_shell *mn_shell)
 	if (!cmds)
 		return (perror("Error: Memory allocation failed"), NULL);
 	else if (cmds->args[0] == NULL)
-		return (free_cmds(cmds), NULL);
+		return (Free_cmds(cmds), NULL);
 	current = cmds;
 	while (current)
 	{
-		if(builtin_cmds(current->args[0]))
-		return (printf("built-in detected"),free_cmds(cmds), NULL);
-		current->path = check_cmd(mn_shell, current->args);
+		if(Builtin_cmds(current->args[0]))
+		return (printf("built-in detected"),Free_cmds(cmds), NULL);
+		current->path = Check_cmd(mn_shell, current->args);
 		if (!current->path)
-			return (free_cmds(cmds), NULL);
-		if(check_files(mn_shell, current, cmds) == 0)
-			return (free_cmds(cmds), NULL);
+			return (Free_cmds(cmds), NULL);
+		if(Parse_files(mn_shell, current, cmds) == 0)
+			return (Free_cmds(cmds), NULL);
 		current = current->next;
 	}
 	return (cmds);

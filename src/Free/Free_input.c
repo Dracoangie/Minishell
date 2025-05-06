@@ -6,21 +6,21 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:38 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/06 12:21:34 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:15:09 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "Minishell.h"
 
-int free_input(char *input)
+int Free_input(char *input)
 {
 	if (input)
 		return (free(input), 1);
 	return (0);
 }
 
-int	free_args(char **args)
+int	Free_args(char **args)
 {
 	int	i;
 
@@ -36,7 +36,7 @@ int	free_args(char **args)
 	return (1);
 }
 
-int	free_strn(char **str, int j)
+int	Free_strn(char **str, int j)
 {
 	if (!str[j])
 	{
@@ -48,7 +48,7 @@ int	free_strn(char **str, int j)
 	return (0);
 }
 
-void	free_cmds(t_cmd *cmds)
+void	Free_cmds(t_cmd *cmds)
 {
     t_cmd	*current;
     t_cmd	*next;
@@ -58,7 +58,7 @@ void	free_cmds(t_cmd *cmds)
     {
         next = current->next;
 		if(	current->args)
-			free_args(current->args);
+			Free_args(current->args);
         if (current->path)
             free(current->path);
         free(current);
@@ -66,19 +66,19 @@ void	free_cmds(t_cmd *cmds)
     }
 }
 
-void free_shell(t_shell *shell)
+void Free_shell(t_shell *shell)
 {
 	if (shell)
 	{
 		if (shell->cmds)
-			free_cmds(shell->cmds);
+			Free_cmds(shell->cmds);
 		if (shell->pipex)
 			free(shell->pipex);
 	}
 }
 
-void free_all(char *input, t_shell *shell)
+void Free_all(char *input, t_shell *shell)
 {
-	free_input(input);
-	free_shell(shell);
+	Free_input(input);
+	Free_shell(shell);
 }

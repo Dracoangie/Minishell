@@ -6,13 +6,13 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 14:19:04 by tu_nombre_d       #+#    #+#             */
-/*   Updated: 2025/05/06 12:21:54 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:17:39 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
-void	close_pipes(t_shell *mn_shell)
+void	Close_pipes(t_shell *mn_shell)
 {
     t_cmd	*current;
 
@@ -98,7 +98,7 @@ static void set_dups_close(t_shell *mn_shell, int i)
         dup2(current->output_fd, STDOUT_FILENO);
     else if (current->next && current->next->input_fd != -1)
         fd_n = fd_null(mn_shell);
-    close_pipes(mn_shell);
+    Close_pipes(mn_shell);
     if (fd_n != -1)
         close(fd_n);
 }
@@ -112,7 +112,7 @@ void	set_childs(t_shell *mn_shell)
 	mn_shell->pipex->childs = malloc(sizeof(pid_t) * mn_shell->n_cmds);
 	if (!mn_shell->pipex->childs)
 	{
-		print_error(mn_shell, "malloc error", EXIT_FAILURE);
+		Print_error(mn_shell, "malloc error", EXIT_FAILURE);
 		return;
 	}
 	current = mn_shell->cmds;
@@ -122,7 +122,7 @@ void	set_childs(t_shell *mn_shell)
 		if (mn_shell->pipex->childs[i] == 0)
 		{
 			set_dups_close(mn_shell, i);
-			execute_command(current, mn_shell);
+			Execute_command(current, mn_shell);
 			exit(EXIT_SUCCESS);
 		}
 		current = current->next;
@@ -130,7 +130,7 @@ void	set_childs(t_shell *mn_shell)
 	}
 }
 
-void pipex(t_shell *mn_shell)
+void Exec_cmds(t_shell *mn_shell)
 {
     int status;
     int i;
@@ -139,7 +139,7 @@ void pipex(t_shell *mn_shell)
     mn_shell->pipex = malloc(sizeof(t_pipex));
     if (!mn_shell->pipex)
     {
-        print_error(mn_shell, "malloc error", EXIT_FAILURE);
+        Print_error(mn_shell, "malloc error", EXIT_FAILURE);
         return;
     }
 
