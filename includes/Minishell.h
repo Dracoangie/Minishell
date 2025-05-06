@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/06 13:17:07 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:07:40 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,6 @@ typedef struct s_cmd
 	int		output_fd;
 }	t_cmd;
 
-typedef struct s_pipex
-{
-	pid_t	*childs;
-}			t_pipex;
-
 typedef struct s_heredoc
 {
 	int		pipe_fd[2];
@@ -52,10 +47,11 @@ typedef struct s_heredoc
 typedef struct s_shell
 {
 	t_cmd	*cmds;
-	int			n_cmds;
-	int			last_exit_code;
-	char		**envp;
-	t_pipex		*pipex;
+	int		n_cmds;
+	int		last_exit_code;
+	int		lvl;
+	char	**envp;
+	pid_t	*childs;
 }	t_shell;
 
 //Init
@@ -64,24 +60,27 @@ t_cmd	*Init_cmd(char **args);
 int		Count_cmds(t_cmd *cmds);
 
 //Errors
-void	Print_error(t_shell *shell, char *msg, int err_code);
-void	Print_error_and_exit(t_shell *shell, char *msg);
+void	Perr_shll(t_shell *shell, char *msg, int err_code);
+void	Perr_exit(t_shell *shell, char *msg);
+void	Perr_name(t_shell *shell, char* name, char *msg, int err_code);
 
 //Free
-int Free_input(char *input);
-int	Free_args(char **args);
-int	Free_strn(char **str, int j);
+int		Free_input(char *input);
+int		Free_args(char **args);
+int		Free_strn(char **str, int j);
 void	Free_cmds(t_cmd *cmds);
-void Free_shell(t_shell *shell);
-void Free_all(char *input, t_shell *shell);
+void	Free_shell(t_shell *shell);
+void	Free_all(char *input, t_shell *shell);
 
 //Parse
 t_cmd	*Parse_input(char *input, t_shell *mn_shell);
 int		Check_exit_cmd(char *input);
+int		Parse_files(t_shell *mn_shell, t_cmd *current, t_cmd *cmds);
 
 //Utils
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_getline(char **line, size_t *len, int fd);
+void		ft_remove_arg(char **args, int index);
 
 //Commands
 char	*Check_cmd(t_shell *mn_shell, char	**args);

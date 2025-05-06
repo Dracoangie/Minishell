@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.c                                      :+:      :+:    :+:   */
+/*   Exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 14:19:04 by tu_nombre_d       #+#    #+#             */
-/*   Updated: 2025/05/06 13:17:39 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:52:18 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,10 @@ void	Close_pipes(t_shell *mn_shell)
     current = mn_shell->cmds;
     while (current)
     {
-        // Cierra input_fd si no es el descriptor estándar
         if (current->input_fd != STDIN_FILENO && current->input_fd != -1)
             close(current->input_fd);
-
-        // Cierra output_fd si no es el descriptor estándar
         if (current->output_fd != STDOUT_FILENO && current->output_fd != -1)
             close(current->output_fd);
-
         current = current->next;
     }
 }
@@ -40,24 +36,16 @@ int create_pipes(t_shell *mn_shell)
     i = 0;
     while (i < mn_shell->n_cmds - 1)
     {
-        // Solo crea un pipe si no hay redirecciones configuradas
         if (current->output_fd == -1 && current->next->input_fd == -1)
         {
             int pipe_fds[2];
             if (pipe(pipe_fds) == -1)
-            {
-                perror("pipe error");
-                mn_shell->last_exit_code = EXIT_FAILURE;
-                return (0);
-            }
-            current->output_fd = pipe_fds[1]; // Escribe en el pipe
-            current->next->input_fd = pipe_fds[0]; // Lee del pipe
+                return (Perr_shll (mn_shell, "pipe error", EXIT_FAILURE), 0);
+            current->output_fd = pipe_fds[1];
+            current->next->input_fd = pipe_fds[0];
         }
 		else if (current->output_fd == -1 && current->next->input_fd != -1)
-        {
-            // Si el siguiente comando ya tiene un input_fd, no redirijas al stdout
             current->output_fd = -1;
-        }
         current = current->next;
         i++;
     }
@@ -88,12 +76,8 @@ static void set_dups_close(t_shell *mn_shell, int i)
     current = mn_shell->cmds;
     for (j = 0; j < i; j++)
         current = current->next;
-
-    // Redirige la entrada estándar
     if (current->input_fd != STDIN_FILENO)
         dup2(current->input_fd, STDIN_FILENO);
-
-    // Redirige la salida estándar
     if (current->output_fd != -1 && current->output_fd != STDOUT_FILENO)
         dup2(current->output_fd, STDOUT_FILENO);
     else if (current->next && current->next->input_fd != -1)
@@ -109,17 +93,17 @@ void	set_childs(t_shell *mn_shell)
 	t_cmd *current;
 
 	i = 0;
-	mn_shell->pipex->childs = malloc(sizeof(pid_t) * mn_shell->n_cmds);
-	if (!mn_shell->pipex->childs)
+	mn_shell->childs = malloc(sizeof(pid_t) * mn_shell->n_cmds);
+	if (!mn_shell->childs)
 	{
-		Print_error(mn_shell, "malloc error", EXIT_FAILURE);
+		Perr_shll(mn_shell, "malloc error", EXIT_FAILURE);
 		return;
 	}
 	current = mn_shell->cmds;
 	while (i < mn_shell->n_cmds)
 	{
-		mn_shell->pipex->childs[i] = fork();
-		if (mn_shell->pipex->childs[i] == 0)
+		mn_shell->childs[i] = fork();
+		if (mn_shell->childs[i] == 0)
 		{
 			set_dups_close(mn_shell, i);
 			Execute_command(current, mn_shell);
@@ -134,44 +118,19 @@ void Exec_cmds(t_shell *mn_shell)
 {
     int status;
     int i;
-    t_cmd *current;
 
-    mn_shell->pipex = malloc(sizeof(t_pipex));
-    if (!mn_shell->pipex)
-    {
-        Print_error(mn_shell, "malloc error", EXIT_FAILURE);
-        return;
-    }
-
+	if (!mn_shell || mn_shell->n_cmds == 0)
+		return;
     if (!create_pipes(mn_shell))
-    {
-        free(mn_shell->pipex);
-        mn_shell->pipex = NULL;
         return;
-    }
-
     set_childs(mn_shell);
-    current = mn_shell->cmds;
-    while (current)
-    {
-        if (current->input_fd != STDIN_FILENO)
-            close(current->input_fd);
-        if (current->output_fd != STDOUT_FILENO)
-            close(current->output_fd);
-        current = current->next;
-    }
-
-    i = 0;
-    while (i < mn_shell->n_cmds)
-    {
-        waitpid(mn_shell->pipex->childs[i], &status, 0);
-        i++;
-    }
-    free(mn_shell->pipex->childs);
+    Close_pipes(mn_shell);
+    i = -1;
+    while (++i < mn_shell->n_cmds)
+        waitpid(mn_shell->childs[i], &status, 0);
+    free(mn_shell->childs);
     if (WIFEXITED(status))
         mn_shell->last_exit_code = WEXITSTATUS(status);
     else
         mn_shell->last_exit_code = 1;
-    free(mn_shell->pipex);
-    mn_shell->pipex = NULL;
 }

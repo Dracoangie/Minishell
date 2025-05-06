@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helper_bonus.c                                     :+:      :+:    :+:   */
+/*   Helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:42:42 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/06 11:30:15 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:03:40 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,18 @@ int	ft_getline(char **line, size_t *len, int fd)
 		return (-1);
 	(*line)[pos] = '\0';
 	return (pos);
+}
+
+
+void ft_remove_arg(char **args, int index)
+{
+    int i;
+
+    free(args[index]);
+    i = index;
+    while (args[i])
+    {
+        args[i] = args[i + 1];
+        i++;
+    }
 }

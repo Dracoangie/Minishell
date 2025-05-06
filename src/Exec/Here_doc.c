@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 14:27:45 by tu_nombre_d       #+#    #+#             */
-/*   Updated: 2025/05/06 13:19:14 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:44:17 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 
 int	here_doc_open_files(t_shell *mn_shell, char **argv)
 {
-    if (mn_shell->pipex->here_doc_mode)
+    if (mn_shell->here_doc_mode)
     {
-        mn_shell->cmds->next->output_fd = open(argv[3 + mn_shell->pipex->cmd_len],
+        mn_shell->cmds->next->output_fd = open(argv[3 + mn_shell->cmd_len],
                 O_WRONLY | O_CREAT | O_APPEND, 0644);
         if (mn_shell->cmds->next->output_fd < 0)
         {
-            perror(argv[2 + mn_shell->pipex->cmd_len]);
+            perror(argv[2 + mn_shell->cmd_len]);
             return (0);
         }
         mn_shell->cmds->input_fd = STDIN_FILENO;

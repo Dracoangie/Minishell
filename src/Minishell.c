@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/06 13:17:13 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:52:18 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_shell *Init_shell(char **envp)
 	shell->n_cmds = 0;
 	shell->last_exit_code = 0;
 	shell->envp = envp;
-	shell->pipex = NULL	;
+	shell->lvl = 0;
 	return (shell);
 }
 
@@ -88,7 +88,7 @@ void	Minishell(char **envp)
 		input = readline("Minishell> ");
 		if (!input)
 		{
-			Print_error(mn_shell, "readline error", 1);
+			Perr_shll(mn_shell, "readline error", 1);
 			break ;
 		}
 		else if (Check_exit_cmd(input))

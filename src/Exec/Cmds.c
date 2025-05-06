@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   comands.c                                          :+:      :+:    :+:   */
+/*   Cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:40:01 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/06 13:15:56 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:52:18 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*Check_cmd(t_shell *mn_shell, char	**args)
 	if (!path || access(path, X_OK) != 0)
 	{
 		write(2, args[0], ft_strlen(args[0]));
-		Print_error(mn_shell, ": command not found", 127);
+		Perr_shll(mn_shell, ": command not found", 127);
 		free(path);
 		mn_shell->last_exit_code = 127;
 		return (NULL);
@@ -78,10 +78,10 @@ void	Execute_command(t_cmd *cmd, t_shell *mn_shell)
 
 	if (execve(cmd->path, cmd->args, mn_shell->envp) == -1)
 	{
-		Print_error(mn_shell, "execve error", EXIT_FAILURE);
+		Perr_shll(mn_shell, "execve error", EXIT_FAILURE);
 		Free_args(cmd->args);
 		free(cmd->path);
-		free(mn_shell->pipex->childs);
+		free(mn_shell->childs);
 		Close_pipes(mn_shell);
 		mn_shell->last_exit_code = EXIT_FAILURE;
 	}
