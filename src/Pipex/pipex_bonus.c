@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 14:19:04 by tu_nombre_d       #+#    #+#             */
-/*   Updated: 2025/05/05 14:21:51 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:21:54 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,29 +83,24 @@ static void set_dups_close(t_shell *mn_shell, int i)
 {
     t_cmd *current;
     int j;
-	int fd_n;
+    int fd_n = -1;
 
     current = mn_shell->cmds;
     for (j = 0; j < i; j++)
         current = current->next;
 
+    // Redirige la entrada estándar
     if (current->input_fd != STDIN_FILENO)
         dup2(current->input_fd, STDIN_FILENO);
+
+    // Redirige la salida estándar
     if (current->output_fd != -1 && current->output_fd != STDOUT_FILENO)
         dup2(current->output_fd, STDOUT_FILENO);
     else if (current->next && current->next->input_fd != -1)
         fd_n = fd_null(mn_shell);
-    current = mn_shell->cmds;
-    while (current)
-    {
-        if (current->input_fd != STDIN_FILENO)
-            close(current->input_fd);
-        if (current->output_fd != STDOUT_FILENO && current->output_fd != -1)
-            close(current->output_fd);
-		current = current->next;
-    }
-	if(fd_n)
-		close(fd_n);
+    close_pipes(mn_shell);
+    if (fd_n != -1)
+        close(fd_n);
 }
 
 void	set_childs(t_shell *mn_shell)

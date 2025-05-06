@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/05 14:20:42 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:00:50 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	print_error_and_exit(t_shell *shell, char *msg);
 int free_input(char *input);
 int	free_args(char **args);
 int	free_strn(char **str, int j);
+void	free_cmds(t_cmd *cmds);
 void free_shell(t_shell *shell);
 void free_all(char *input, t_shell *shell);
 
@@ -82,13 +83,13 @@ int		check_exit_cmd(char *input);
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_getline(char **line, size_t *len, int fd);
 
-//Pipex
-
+//Commands
+char	*check_cmd(t_shell *mn_shell, char	**args);
 void	execute_command(t_cmd *cmd, t_shell *mn_shell);
-int			open_files(t_shell *mn_shell);
-void		close_pipes(t_shell *mn_shell);
-
 char	*get_cmd_path(char *cmd, char **envp);
+
+//Pipex
+void		close_pipes(t_shell *mn_shell);
 void	pipex(t_shell *mn_shell);
 
 //Minishell

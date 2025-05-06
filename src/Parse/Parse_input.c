@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/05 14:58:28 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:56:53 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,110 @@ t_cmd	*ft_split_to_cmds(char const *s, char c)
     }
     return (head);
 }
+void remove_arg(char **args, int index)
+{
+    int i;
+
+    free(args[index]);
+    i = index;
+    while (args[i])
+    {
+        args[i] = args[i + 1];
+        i++;
+    }
+}
+
+int command_uses_files(const char *cmd)
+{
+    const char *file_commands[] = {"cat", "ls", "cp", "mv", NULL};
+    for (int i = 0; file_commands[i]; i++)
+    {
+        if (ft_strcmp(cmd, file_commands[i]) == 0)
+            return (1);
+    }
+    return (0);
+}
+
+int check_files(t_shell *mn_shell, t_cmd *current, 	t_cmd	*cmds)
+{
+    int i;
+
+    i = 1;
+    while (current->args[i])
+    {
+        if (current->args[i][0] == '-')
+		{
+			i++;
+            continue;
+		}
+		else if (current->args[i][0] == '<')
+		{
+			current->input_fd = open(current->args[i + 1], O_RDONLY);
+			if (current->input_fd < 0)
+			{
+				if (errno == ENOENT)
+					return (print_error(mn_shell, "Error: File not found", 2), 0);
+				else if (errno == EACCES)
+					return (print_error(mn_shell, "Error: Permission denied", 1), 0);
+				else
+					return (print_error(mn_shell, "Error: Failed to open file", 1), 0);
+			}
+            remove_arg(current->args, i);
+			remove_arg(current->args, i);
+		}
+		else if (current->args[i][0] == '>')
+		{
+			current->output_fd = open(current->args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (current->output_fd < 0)
+			{
+				if (errno == ENOENT)
+					return (print_error(mn_shell, "Error: File not found", 2), 0);
+				else if (errno == EACCES)
+					return (print_error(mn_shell, "Error: Permission denied", 1), 0);
+				else
+					return (print_error(mn_shell, "Error: Failed to open file", 1), 0);
+			}
+            remove_arg(current->args, i);
+			remove_arg(current->args, i);
+		}
+		else if(command_uses_files(current->args[0]))
+		{
+			current->input_fd = open(current->args[i], O_RDONLY);
+			if (current->input_fd < 0)
+			{
+				if (errno == ENOENT)
+					return (print_error(mn_shell, "Error: File not found", 2), 0);
+				else if (errno == EACCES)
+					return (print_error(mn_shell, "Error: Permission denied", 1), 0);
+				else
+					return (print_error(mn_shell, "Error: Failed to open file", 1), 0);
+			}
+		}
+        i++;
+    }
+	if (current == cmds && current->input_fd == -1)
+		current->input_fd = STDIN_FILENO;
+    if (!current->next && current->output_fd == -1)
+        current->output_fd = STDOUT_FILENO;
+    return (1);
+}
+
+int	builtin_cmds(char *input)
+{
+	if (ft_strcmp(input, "echo") == 0)
+		return (1);
+	else if (ft_strcmp(input, "cd") == 0)
+		return (1);
+	else if (ft_strcmp(input, "pwd") == 0)
+		return (1);
+	else if (ft_strcmp(input, "export") == 0)
+		return (1);
+	else if (ft_strcmp(input, "unset") == 0)
+		return (1);
+	else if (ft_strcmp(input, "env") == 0)
+		return (1);
+	return (0);
+}
 
 t_cmd	*Parse_input(char *input, t_shell *mn_shell)
 {
@@ -90,27 +194,19 @@ t_cmd	*Parse_input(char *input, t_shell *mn_shell)
 
 	cmds = ft_split_to_cmds(input, '|');
 	if (!cmds)
-	{
-		perror("Error: Memory allocation failed");
-		return (NULL);
-	}
+		return (perror("Error: Memory allocation failed"), NULL);
 	else if (cmds->args[0] == NULL)
-	{
-		free(cmds);
-		return (NULL);
-	}
+		return (free_cmds(cmds), NULL);
 	current = cmds;
 	while (current)
 	{
-		current->path = get_cmd_path(current->args[0], mn_shell->envp);
-		if (!current->path || access(current->path, X_OK) != 0)
-		{
-			write(2, current->args[0], ft_strlen(current->args[0]));
-			print_error(mn_shell, ": command not found", 127);
-			free(current->args);
-			free(current);
-			return (NULL);
-		}
+		if(builtin_cmds(current->args[0]))
+		return (printf("built-in detected"),free_cmds(cmds), NULL);
+		current->path = check_cmd(mn_shell, current->args);
+		if (!current->path)
+			return (free_cmds(cmds), NULL);
+		if(check_files(mn_shell, current, cmds) == 0)
+			return (free_cmds(cmds), NULL);
 		current = current->next;
 	}
 	return (cmds);

@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:38 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/05 11:42:54 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:21:34 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	free_cmds(t_cmd *cmds)
     while (current)
     {
         next = current->next;
+		if(	current->args)
+			free_args(current->args);
         if (current->path)
             free(current->path);
         free(current);

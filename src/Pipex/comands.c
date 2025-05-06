@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:40:01 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/05 14:19:34 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/06 11:22:36 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,20 @@ char	*get_cmd_path(char *cmd, char **envp)
 	return (search_executable_in_paths(cmd, paths));
 }
 
-void	check_cmd(t_shell *mn_shell, char	*path, char	**args)
+char	*check_cmd(t_shell *mn_shell, char	**args)
 {
+	char	*path;
+	
 	path = get_cmd_path(args[0], mn_shell->envp);
 	if (!path || access(path, X_OK) != 0)
 	{
 		write(2, args[0], ft_strlen(args[0]));
 		print_error(mn_shell, ": command not found", 127);
-		free_args(args);
 		free(path);
-		free(mn_shell->pipex->childs);
-		close_pipes(mn_shell);
 		mn_shell->last_exit_code = 127;
+		return (NULL);
 	}
+	return (path);
 }
 
 void	execute_command(t_cmd *cmd, t_shell *mn_shell)
