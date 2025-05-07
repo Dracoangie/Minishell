@@ -6,7 +6,7 @@
 /*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/07 12:25:31 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/07 20:52:33 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void	Minishell(char **envp)
 		Free_all(input, mn_shell);
 	}
 	free(mn_shell);
-	clear_history();
+	rl_clear_history();
 }
 
 //posible main function

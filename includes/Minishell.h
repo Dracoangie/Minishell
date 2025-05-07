@@ -6,7 +6,7 @@
 /*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/07 13:43:32 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/07 22:51:53 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	Perr_shll(t_shell *shell, char *msg, int err_code);
 void	Perr_exit(t_shell *shell, char *msg);
 void	Perr_name(t_shell *shell, char* name, char *msg, int err_code);
 void	Perr_mem(t_shell *mn_shell);
+void	Perr_redir(t_shell *mn_shell, char *msg);
 
 //Free
 int		Free_input(char *input);
@@ -79,9 +80,12 @@ int		Check_exit_cmd(char *input);
 int		Parse_files(t_shell *mn_shell, t_cmd *current, t_cmd *cmds);
 
 //Utils
-int			ft_strcmp(const char *s1, const char *s2);
-int			ft_getline(char **line, size_t *len, int fd);
-void		ft_remove_arg(char **args, int index);
+int		ft_strcmp(const char *s1, const char *s2);
+int		ft_getline(char **line, size_t *len, int fd);
+void	ft_remove_arg(char **args, int index);
+void	print_cmds(t_cmd *cmd_list);
+int		ft_argstr(const char **args, const char *str);
+int		ft_count_args(char **args);
 
 //Commands
 char	*Check_cmd(t_shell *mn_shell, char	**args);
@@ -93,6 +97,6 @@ void	Close_pipes(t_shell *mn_shell);
 void	Exec_cmds(t_shell *mn_shell);
 
 //Minishell
-void Minishell(char **envp);
+void	Minishell(char **envp);
 
 #endif

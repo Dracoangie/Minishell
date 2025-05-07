@@ -40,3 +40,11 @@ void	Perr_mem(t_shell *mn_shell)
     write(2, "Error: Memory allocation failed\n", 33);
 	mn_shell->last_exit_code = 1;
 }
+
+void	Perr_redir(t_shell *mn_shell, char *msg)
+{
+    write(2, "bash: syntax error near unexpected token `", 43);
+	write(2, msg, ft_strlen(msg));
+    write(2, "\'\n", 2);
+	mn_shell->last_exit_code = 2;
+}

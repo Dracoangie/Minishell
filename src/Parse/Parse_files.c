@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Parse_files.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:07:17 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/06 14:28:16 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:42:51 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ int Parse_files(t_shell *mn_shell, t_cmd *current, t_cmd *cmds)
             i++;
             continue;
         }
-        else if (current->args[i][0] == '<')
+        else if (current->args[i][0] == '<' && current->args[i][1] == '\0')
         {
+			if (current->input_fd != -1 && current->input_fd != STDIN_FILENO)
+                close(current->input_fd);
             if (!handle_file_open(mn_shell, current->args[i + 1], O_RDONLY, &current->input_fd))
                 return (0);
 			ft_remove_arg(current->args, i);
@@ -59,6 +61,8 @@ int Parse_files(t_shell *mn_shell, t_cmd *current, t_cmd *cmds)
         }
         else if (current->args[i][0] == '>')
         {
+			if (current->output_fd != -1 && current->output_fd != STDOUT_FILENO)
+				close(current->output_fd);
             if (!handle_file_open(mn_shell, current->args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, &current->output_fd))
                 return (0);
 			ft_remove_arg(current->args, i);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:42:42 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/06 14:56:53 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/07 23:00:33 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,31 @@ void ft_remove_arg(char **args, int index)
         args[i] = args[i + 1];
         i++;
     }
+}
+
+int		ft_argstr(const char **args, const char *str)
+{
+    int i;
+
+    if (!args || !str)
+        return (-1);
+    i = 0;
+    while (args[i])
+    {
+        if (ft_strcmp(args[i], str) == 0)
+            return (i);
+        i++;
+    }
+    return (-1);
+}
+
+int ft_count_args(char **args)
+{
+    int count = 0;
+
+    if (!args)
+        return (0);
+    while (args[count])
+        count++;
+    return (count);
 }

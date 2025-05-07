@@ -6,7 +6,7 @@
 /*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/07 13:44:44 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/08 01:43:01 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,40 @@ int	Check_exit_cmd(char *input)
 
 int	cmd_count(const char *s, char c)
 {
-	int	i;
-	int	in_word;
+    int	i;
+    int	in_word;
+    char	quote = '\0';
 
-	i = 0;
-	in_word = 0;
-	while (*s)
-	{
-		if (*s != c && !in_word)
-		{
-			in_word = 1;
-			i++;
-		}
-		else if (*s == c)
-			in_word = 0;
-		s++;
-	}
-	return (i);
+    i = 0;
+    in_word = 0;
+    while (*s)
+    {
+        if (*s == '\'' || *s == '"')
+        {
+            if (quote == '\0')
+                quote = *s;
+            else if (quote == *s)
+                quote = '\0';
+        }
+        if ((*s == '<' || *s == '>') && quote == '\0')
+        {
+            i++;
+            if (*(s + 1) == *s)
+                s++;
+            s++;
+            in_word = 0;
+            continue;
+        }
+        if (*s != c && !in_word)
+        {
+            in_word = 1;
+            i++;
+        }
+        else if (*s == c && quote == '\0')
+            in_word = 0;
+        s++;
+    }
+    return (i);
 }
 
 char	**ft_split_with_quotes(const char *s, char c)
@@ -52,7 +69,7 @@ char	**ft_split_with_quotes(const char *s, char c)
     int		i = 0, j = 0, start;
     char	quote = '\0';
 
-    result = malloc(sizeof(char *) * (cmd_count(s, c) + 1));
+    result = ft_calloc(sizeof(char *), (cmd_count(s, c) + 1));
     if (!result)
         return (NULL);
     while (s[i])
@@ -61,8 +78,37 @@ char	**ft_split_with_quotes(const char *s, char c)
             i++;
         if (s[i])
         {
+            if (s[i] == '\'' || s[i] == '"')
+            {
+                quote = s[i];
+                start = ++i;
+                while (s[i] && s[i] != quote)
+                    i++;
+                if (s[i] == quote)
+                    result[j++] = ft_substr(s, start, i++ - start);
+				else
+					return (Free_args(result), NULL);
+				continue;
+            }
+            if ((s[i] == '<' || s[i] == '>') && quote == '\0')
+            {
+                if (s[i + 1] == s[i])
+                {
+                    result[j++] = ft_substr(s, i, 2);
+                    i += 2;
+                }
+                else
+                {
+                    result[j++] = ft_substr(s, i, 1);
+                    i++;
+                }
+                continue;
+            }
             start = i;
-            while (s[i] && (s[i] != c || quote != '\0'))
+            while (s[i] && (s[i] != c || quote != '\0') &&
+                   !(s[i] == '<' || s[i] == '>') &&
+                   !(s[i] == '<' && s[i + 1] == '<') &&
+                   !(s[i] == '>' && s[i + 1] == '>'))
             {
                 if (s[i] == '\'' || s[i] == '"')
                 {
@@ -161,6 +207,38 @@ int	Builtin_cmds(t_cmd	*cmds, t_shell *mn_shell)
 	return (0);
 }
 
+int Parse_redirect(t_cmd *cmds, t_shell *mn_shell)
+{
+    const char *redirs[] = {"<<", "<", ">>", ">", "|", NULL};
+	t_cmd *aux;
+    int j;
+
+	aux = cmds;
+	while (aux)
+	{
+		if (aux->args[0] == NULL)
+			return (0);
+		j = ft_count_args(aux->args) - 1;
+		if (j < 1)
+			return (0);
+		if (ft_argstr(redirs, aux->args[j]) != -1 && aux->next == NULL)
+			return (Perr_redir(mn_shell, "newline"), 1);
+		if (ft_argstr(redirs, aux->args[j]) != -1)
+			return (Perr_redir(mn_shell, "|"), 1);
+		while (j > 0)
+		{
+			if (ft_argstr(redirs, aux->args[j]) != -1)
+			{
+				if (ft_argstr(redirs, aux->args[j - 1]) != -1)
+					return (Perr_redir(mn_shell, (char *)aux->args[j]), 1);
+			}
+			j--;
+		}
+		aux = aux->next;
+	}
+    return (0);
+}
+
 t_cmd	*Parse_input(char *input, t_shell *mn_shell)
 {
 	t_cmd	*cmds;
@@ -174,11 +252,15 @@ t_cmd	*Parse_input(char *input, t_shell *mn_shell)
 	current = cmds;
 	while (current)
 	{
+		print_cmds(current);
+		if (Parse_redirect(current, mn_shell) == 1)
+			return (Free_cmds(cmds), NULL);
 		if(Builtin_cmds(current, mn_shell))
 			return (Free_cmds(cmds), NULL);
 		current->path = Check_cmd(mn_shell, current->args);
 		if (!current->path)
 			return (Free_cmds(cmds), NULL);
+		print_cmds(cmds);
 		if(Parse_files(mn_shell, current, cmds) == 0)
 			return (Free_cmds(cmds), NULL);
 		current = current->next;
