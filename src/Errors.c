@@ -34,4 +34,9 @@ void Perr_exit(t_shell *shell, char *msg)
     write(2, "\n", 1);
     exit(shell->last_exit_code);
 }
-	
+
+void	Perr_mem(t_shell *mn_shell)
+{
+    write(2, "Error: Memory allocation failed\n", 33);
+	mn_shell->last_exit_code = 1;
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/06 14:56:24 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/07 13:44:44 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,30 +46,81 @@ int	cmd_count(const char *s, char c)
 	return (i);
 }
 
-t_cmd	*ft_split_to_cmds(char const *s, char c)
+char	**ft_split_with_quotes(const char *s, char c)
+{
+    char	**result;
+    int		i = 0, j = 0, start;
+    char	quote = '\0';
+
+    result = malloc(sizeof(char *) * (cmd_count(s, c) + 1));
+    if (!result)
+        return (NULL);
+    while (s[i])
+    {
+        while (s[i] == c && s[i])
+            i++;
+        if (s[i])
+        {
+            start = i;
+            while (s[i] && (s[i] != c || quote != '\0'))
+            {
+                if (s[i] == '\'' || s[i] == '"')
+                {
+                    if (quote == '\0')
+                        quote = s[i];
+                    else if (quote == s[i])
+                        quote = '\0';
+                }
+                i++;
+            }
+            result[j++] = ft_substr(s, start, i - start);
+        }
+    }
+    result[j] = NULL;
+    return (result);
+}
+
+t_cmd	*ft_split_to_cmds(char const *s, char c, t_shell *mn_shell)
 {
     t_cmd	*head = NULL;
     t_cmd	*current = NULL;
     t_cmd	*new_cmd;
     int		i;
     int		start;
+    char	quote = '\0';
 
     i = 0;
     while (s[i])
     {
-        if (s[i] != c)
+        if (s[i] == '\'' || s[i] == '"')
+        {
+            if (quote == '\0')
+                quote = s[i];
+            else if (quote == s[i])
+                quote = '\0';
+        }
+        if (s[i] != c || quote != '\0')
         {
             start = i;
-            while (s[i] && s[i] != c)
+            while (s[i] && (s[i] != c || quote != '\0'))
+            {
+                if (s[i] == '\'' || s[i] == '"')
+                {
+                    if (quote == '\0')
+                        quote = s[i];
+                    else if (quote == s[i])
+                        quote = '\0';
+                }
                 i++;
+            }
             char *cmd_str = ft_substr(s, start, i - start);
             if (!cmd_str)
-                return (NULL);
-            char **args = ft_split(cmd_str, ' ');
+                return (Perr_mem(mn_shell), NULL);
+            char **args = ft_split_with_quotes(cmd_str, ' ');
             free(cmd_str);
             new_cmd = Init_cmd(args);
             if (!new_cmd)
-                return (NULL);
+				return (Perr_mem(mn_shell), NULL);
             if (!head)
                 head = new_cmd;
             else
@@ -79,22 +130,33 @@ t_cmd	*ft_split_to_cmds(char const *s, char c)
         else
             i++;
     }
+	if (quote != '\0')
+        return (Free_cmds(head), Perr_shll (mn_shell,"Error: Unmatched quotes in input", 1), NULL);
     return (head);
 }
 
-int	Builtin_cmds(char *input)
+int Parse_echo(t_cmd *cmds, t_shell *mn_shell)
 {
-	if (ft_strcmp(input, "echo") == 0)
+	if (cmds->args[1] && ft_strcmp(cmds->args[1], "-n") == 0)
 		return (1);
-	else if (ft_strcmp(input, "cd") == 0)
+	else if (cmds->args[1] && ft_strcmp(cmds->args[1], "$SHLVL") == 0)
+		return (printf("%d\n", mn_shell->lvl), 1);
+	return (0);
+}
+
+int	Builtin_cmds(t_cmd	*cmds, t_shell *mn_shell)
+{
+	if (ft_strcmp(cmds->args[0], "echo") == 0)
+		return (Parse_echo(cmds, mn_shell));
+	else if (ft_strcmp(cmds->args[0], "cd") == 0)
 		return (1);
-	else if (ft_strcmp(input, "pwd") == 0)
+	else if (ft_strcmp(cmds->args[0], "pwd") == 0)
 		return (1);
-	else if (ft_strcmp(input, "export") == 0)
+	else if (ft_strcmp(cmds->args[0], "export") == 0)
 		return (1);
-	else if (ft_strcmp(input, "unset") == 0)
+	else if (ft_strcmp(cmds->args[0], "unset") == 0)
 		return (1);
-	else if (ft_strcmp(input, "env") == 0)
+	else if (ft_strcmp(cmds->args[0], "env") == 0)
 		return (1);
 	return (0);
 }
@@ -104,16 +166,16 @@ t_cmd	*Parse_input(char *input, t_shell *mn_shell)
 	t_cmd	*cmds;
 	t_cmd	*current;
 
-	cmds = ft_split_to_cmds(input, '|');
+	cmds = ft_split_to_cmds(input, '|', mn_shell);
 	if (!cmds)
-		return (perror("Error: Memory allocation failed"), NULL);
+		return (NULL);
 	else if (cmds->args[0] == NULL)
 		return (Free_cmds(cmds), NULL);
 	current = cmds;
 	while (current)
 	{
-		if(Builtin_cmds(current->args[0]))
-			return (printf("built-in detected"),Free_cmds(cmds), NULL);
+		if(Builtin_cmds(current, mn_shell))
+			return (Free_cmds(cmds), NULL);
 		current->path = Check_cmd(mn_shell, current->args);
 		if (!current->path)
 			return (Free_cmds(cmds), NULL);
@@ -123,4 +185,3 @@ t_cmd	*Parse_input(char *input, t_shell *mn_shell)
 	}
 	return (cmds);
 }
-

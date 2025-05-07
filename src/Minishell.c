@@ -3,14 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/06 13:52:18 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:25:31 by tu_nombre_d      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
+
+/*char **update_shlvl(char **envp)
+{
+    char *shlvl_str = getenv("SHLVL");
+    int shlvl = 0;
+
+    // Obtener el valor actual de SHLVL
+    if (shlvl_str)
+        shlvl = atoi(shlvl_str);
+
+    // Incrementar el nivel
+    shlvl++;
+
+    // Convertir el nuevo nivel a cadena
+    char *new_shlvl = malloc(12); // Espacio suficiente para un entero
+    if (!new_shlvl)
+        return envp; // Si falla malloc, no hacemos nada
+    snprintf(new_shlvl, 12, "SHLVL=%d", shlvl);
+
+    // Buscar SHLVL en envp y actualizarlo
+    for (int i = 0; envp[i]; i++)
+    {
+        if (strncmp(envp[i], "SHLVL=", 6) == 0)
+        {
+            free(envp[i]); // Liberar la entrada antigua
+            envp[i] = new_shlvl;
+            return envp;
+        }
+    }
+
+    // Si no se encontró SHLVL, agregarlo al final
+    int env_count = 0;
+    while (envp[env_count])
+        env_count++;
+
+    char **new_envp = malloc((env_count + 2) * sizeof(char *));
+    if (!new_envp)
+    {
+        free(new_shlvl);
+        return envp; // Si falla malloc, no hacemos nada
+    }
+
+    for (int i = 0; i < env_count; i++)
+        new_envp[i] = envp[i];
+    new_envp[env_count] = new_shlvl;
+    new_envp[env_count + 1] = NULL;
+
+    return new_envp;
+}*/
+
 
 t_shell *Init_shell(char **envp)
 {
