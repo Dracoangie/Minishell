@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/09 13:30:20 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:31:13 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void print_cmds(t_cmd *cmd_list)
         i = 0;
         while (current->args && current->args[i])
         {
-			printf("  patpat\n");
             printf("  Arg[%d]: %s\n", i, current->args[i]);
             i++;
         }

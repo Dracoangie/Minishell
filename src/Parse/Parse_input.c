@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/09 14:17:10 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:55:15 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,49 @@ int	get_next_quote(int i, char *str, char c)
 }
 
 int	cmd_count(const char *s)
+{
+    int	i;
+    int	result;
+    char	quote = '\0';
+
+    i = 0;
+    result = 0;
+    while (s[i])
+    {
+        if (s[i] == '"' || s[i] == '\'')
+        {
+            if (quote == '\0')
+            {
+                quote = s[i];
+                result++;
+            }
+            else if (quote == s[i])
+                quote = '\0';
+            i++;
+            continue;
+        }
+        if ((s[i] == '<' || s[i] == '>') && quote == '\0')
+        {
+            result++;
+            if (s[i + 1] == s[i])
+                i++;
+            i++;
+            continue;
+        }
+        if (s[i] != ' ' && s[i] != '"' && s[i] != '\'' && quote == '\0')
+        {
+            result++;
+            while (s[i] && s[i] != ' ' && s[i] != '"' && s[i] != '\'' &&
+                   s[i] != '<' && s[i] != '>' && quote == '\0')
+                i++;
+            continue;
+        }
+        i++;
+    }
+    return (result);
+}
+
+int	cmd_count2(const char *s)
 {
     int	i;
     int	result;
@@ -72,15 +115,25 @@ char	**ft_split_with_quotes(const char *s, char c)
         start = i;
         if (s[i] == '\'' || s[i] == '"')
         {
-            quote = s[i++];
+            quote = s[i];
+			i++;
             while (s[i] && s[i] != quote)
                 i++;
-            if (s[i] == quote)
+			if (s[i] == quote)
+				i++;
+			quote = '\0';
+        }
+        else if ((s[i] == '<' || s[i] == '>') && quote == '\0')
+        {
+            if (s[i + 1] == s[i])
+                i += 2;
+            else
                 i++;
         }
         else
         {
-            while (s[i] && s[i] != c && !(s[i] == '\'' || s[i] == '"'))
+            while (s[i] && s[i] != c && !(s[i] == '\'' || s[i] == '"') &&
+                   !(s[i] == '<' || s[i] == '>'))
                 i++;
         }
         result[j++] = ft_substr(s, start, i - start);
