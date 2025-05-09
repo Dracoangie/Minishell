@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
+/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/07 22:51:53 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/09 11:58:14 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	Free_all(char *input, t_shell *shell);
 t_cmd	*Parse_input(char *input, t_shell *mn_shell);
 int		Check_exit_cmd(char *input);
 int		Parse_files(t_shell *mn_shell, t_cmd *current, t_cmd *cmds);
+int		Here_doc(char *delimiter, t_shell *mn_shell);
 
 //Utils
 int		ft_strcmp(const char *s1, const char *s2);
