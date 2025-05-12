@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/12 14:19:05 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:12:24 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,6 @@ int	Check_exit_cmd(char *input)
 		free(input);
 		return (1);
 	}
-	return (0);
-}
-
-int Parse_echo(t_cmd *cmds, t_shell *mn_shell)
-{
-	if (cmds->args[1] && ft_strcmp(cmds->args[1], "-n") == 0)
-		return (1);
-	else if (cmds->args[1] && ft_strcmp(cmds->args[1], "$SHLVL") == 0)
-		return (printf("%d\n", mn_shell->lvl), 1);
 	return (0);
 }
 
@@ -83,6 +74,23 @@ int Parse_redirect(t_cmd *cmds, t_shell *mn_shell)
     return (0);
 }
 
+void	Parse_quotes(t_cmd *cmd)
+{
+	int		i = 0;
+	char	*tmp;
+
+	if (!cmd || !cmd->args)
+		return;
+	while (cmd->args[i])
+	{
+		tmp = ft_remove_quotes(cmd->args[i]);
+		free(cmd->args[i]);
+		cmd->args[i] = tmp;
+		i++;
+	}
+}
+
+
 t_cmd	*Parse_input(char *input, t_shell *mn_shell)
 {
 	t_cmd	*cmds;
@@ -101,6 +109,7 @@ t_cmd	*Parse_input(char *input, t_shell *mn_shell)
 			return (Free_cmds(cmds), NULL);
 		if(Builtin_cmds(current, mn_shell))
 			return (Free_cmds(cmds), NULL);
+		Parse_quotes(cmds);
 		current->path = Check_cmd(mn_shell, current->args);
 		if (!current->path)
 			return (Free_cmds(cmds), NULL);
