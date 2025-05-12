@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 14:27:45 by tu_nombre_d       #+#    #+#             */
-/*   Updated: 2025/05/09 13:41:25 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:15:33 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	check_here_doc_error(t_heredoc *hd_data, t_shell *mn_shell)
     }
 	return (1);
 }
+
 int	Here_doc(char *delimiter, t_shell *mn_shell)
 {
     t_heredoc	hd_data;

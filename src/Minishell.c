@@ -6,11 +6,27 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/09 14:31:13 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:27:29 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
+
+char **copy_env(char **env)
+{
+	int count;
+	int i;
+	
+	count = 0;
+	i = -1;
+	while (env[count])
+		count++;
+	char **env_copy = malloc((count + 1) * sizeof(char *));
+	while ( ++i < count)
+		env_copy[i] = strdup(env[i]);
+	env_copy[count] = NULL;
+	return env_copy;
+}
 
 t_shell *Init_shell(char **envp)
 {
@@ -22,7 +38,7 @@ t_shell *Init_shell(char **envp)
 	shell->cmds = NULL;
 	shell->n_cmds = 0;
 	shell->last_exit_code = 0;
-	shell->envp = envp;
+	shell->envp = copy_env(envp);
 	shell->lvl = 0;
 	return (shell);
 }
@@ -52,26 +68,6 @@ int Count_cmds(t_cmd *cmds)
         cmds = cmds->next;
     }
     return (count);
-}
-
-void print_cmds(t_cmd *cmd_list)
-{
-    t_cmd *current = cmd_list;
-    int i;
-
-    while (current)
-    {
-        printf("Command:\n");
-        i = 0;
-        while (current->args && current->args[i])
-        {
-            printf("  Arg[%d]: %s\n", i, current->args[i]);
-            i++;
-        }
-        printf("  Input FD: %d\n", current->input_fd);
-        printf("  Output FD: %d\n", current->output_fd);
-        current = current->next;
-    }
 }
 
 void	Minishell(char **envp)
@@ -107,10 +103,11 @@ void	Minishell(char **envp)
 		}
 		mn_shell->cmds = cmd_list;
 		mn_shell->n_cmds = Count_cmds(cmd_list);
-		//print_cmds(mn_shell->cmds);
+		ft_print_cmds(mn_shell->cmds);
 		Exec_cmds(mn_shell);
 		Free_all(input, mn_shell);
 	}
+	free_env(mn_shell->envp);
 	free(mn_shell);
 	rl_clear_history();
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Helper.c                                           :+:      :+:    :+:   */
+/*   Utils_0.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tu_nombre_de_usuario <tu_email@ejemplo.    +#+  +:+       +#+        */
+/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:42:42 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/07 23:00:33 by tu_nombre_d      ###   ########.fr       */
+/*   Updated: 2025/05/12 14:41:11 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,15 +98,4 @@ int		ft_argstr(const char **args, const char *str)
         i++;
     }
     return (-1);
-}
-
-int ft_count_args(char **args)
-{
-    int count = 0;
-
-    if (!args)
-        return (0);
-    while (args[count])
-        count++;
-    return (count);
 }

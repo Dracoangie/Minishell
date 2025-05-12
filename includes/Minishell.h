@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/09 11:58:14 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:26:59 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,21 @@ int		Free_strn(char **str, int j);
 void	Free_cmds(t_cmd *cmds);
 void	Free_shell(t_shell *shell);
 void	Free_all(char *input, t_shell *shell);
+void	free_env(char **env_copy);
 
 //Parse
 t_cmd	*Parse_input(char *input, t_shell *mn_shell);
 int		Check_exit_cmd(char *input);
 int		Parse_files(t_shell *mn_shell, t_cmd *current, t_cmd *cmds);
 int		Here_doc(char *delimiter, t_shell *mn_shell);
+char	**ft_split_with_quotes(const char *s, char c);
+t_cmd	*Parse_to_cmds(char const *s, char c, t_shell *mn_shell);
 
 //Utils
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_getline(char **line, size_t *len, int fd);
 void	ft_remove_arg(char **args, int index);
-void	print_cmds(t_cmd *cmd_list);
+void	ft_print_cmds(t_cmd *cmd_list);
 int		ft_argstr(const char **args, const char *str);
 int		ft_count_args(char **args);
 
