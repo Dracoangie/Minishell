@@ -6,9 +6,10 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/12 14:26:59 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:49:48 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 
@@ -101,6 +102,16 @@ void	Close_pipes(t_shell *mn_shell);
 void	Exec_cmds(t_shell *mn_shell);
 
 //Minishell
+void Minishell(char **envp);
+
+//Builtins
+void	execute_pwd(void);
+void	execute_env(char **envp, char *command);
+char **execute_unset(char **envp, char *command);
+
+//Builtins_utils
+int	find_env_line(char **envp, char *key);
+char **delete_env_var(char **envp, char *key);
 void	Minishell(char **envp);
 
 #endif

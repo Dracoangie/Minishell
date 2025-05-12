@@ -6,7 +6,7 @@
 #    By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 10:57:18 by angnavar          #+#    #+#              #
-#    Updated: 2025/05/12 14:41:39 by angnavar         ###   ########.fr        #
+#    Updated: 2025/05/12 14:51:52 by angnavar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ SRC = main.c src/Minishell.c src/Errors.c \
 	src/Parse/Parse_quotes.c src/Parse/Parse_to_cmds.c \
 	src/Exec/Cmds.c  src/Exec/Exec_cmds.c \
 	src/Utils/Utils_0.c src/Utils/Utils_1.c \
-	src/Free/Free_shell.c src/Free/Free_input.c
+	src/Free/Free_shell.c src/Free/Free_input.c \
+	src/builtins/builtins.c src/builtins/builtins_utils.c
 OBJ_DIR = obj
 OBJ = $(SRC:.c=.o)
 OBJ := $(addprefix $(OBJ_DIR)/, $(OBJ))
