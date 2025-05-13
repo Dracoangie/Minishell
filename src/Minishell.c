@@ -6,106 +6,58 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/12 14:27:29 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:17:07 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
-char **copy_env(char **env)
+int	count_cmds(t_cmd *cmds)
 {
-	int count;
-	int i;
-	
+	int	count;
+
 	count = 0;
-	i = -1;
-	while (env[count])
+	while (cmds)
+	{
 		count++;
-	char **env_copy = malloc((count + 1) * sizeof(char *));
-	while ( ++i < count)
-		env_copy[i] = strdup(env[i]);
-	env_copy[count] = NULL;
-	return env_copy;
+		cmds = cmds->next;
+	}
+	return (count);
 }
 
-t_shell *Init_shell(char **envp)
-{
-	t_shell	*shell;
-
-	shell = malloc(sizeof(t_shell));
-	if (!shell)
-		return (NULL);
-	shell->cmds = NULL;
-	shell->n_cmds = 0;
-	shell->last_exit_code = 0;
-	shell->envp = copy_env(envp);
-	shell->lvl = 0;
-	return (shell);
-}
-
-t_cmd	*Init_cmd(char **args)
-{
-	t_cmd	*cmd;
-
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
-		return (NULL);
-	cmd->args = args;
-	cmd->path = NULL;
-	cmd->input_fd = -1;
-	cmd->output_fd = -1;
-	cmd->next = NULL;
-	return (cmd);
-}
-
-int Count_cmds(t_cmd *cmds)
-{
-    int count = 0;
-
-    while (cmds)
-    {
-        count++;
-        cmds = cmds->next;
-    }
-    return (count);
-}
-
-void	Minishell(char **envp)
+static int	minishell_loop(t_shell *mn_shell)
 {
 	char	*input;
-	t_shell *mn_shell;
-	t_cmd *cmd_list;
 
-	mn_shell = Init_shell(envp);
+	input = readline("Minishell> ");
+	if (!input)
+		return (perr_shll(mn_shell, "readline error", 1), 1);
+	if (check_exit_cmd(input))
+		return (1);
+	if (input[0] == '\0')
+		return (free(input), 0);
+	add_history(input);
+	mn_shell->cmds = parse_input(input, mn_shell);
+	if (!mn_shell->cmds)
+		return (free(input), 0);
+	mn_shell->n_cmds = count_cmds(mn_shell->cmds);
+	ft_print_cmds(mn_shell->cmds);
+	exec_cmds(mn_shell);
+	free_all(input, mn_shell);
+	return (0);
+}
+
+void	minishell(char **envp)
+{
+	t_shell	*mn_shell;
+
+	mn_shell = init_shell(envp);
 	if (!mn_shell)
-		return;
+		return ;
 	while (1)
 	{
-		input = readline("Minishell> ");
-		if (!input)
-		{
-			Perr_shll(mn_shell, "readline error", 1);
+		if (minishell_loop(mn_shell))
 			break ;
-		}
-		else if (Check_exit_cmd(input))
-			break ;
-		else if (input[0] == '\0')
-		{
-			free(input);
-			continue;
-		}
-		add_history(input);
-		cmd_list = Parse_input(input, mn_shell);
-		if (!cmd_list)
-		{
-			free(input);
-			continue;
-		}
-		mn_shell->cmds = cmd_list;
-		mn_shell->n_cmds = Count_cmds(cmd_list);
-		ft_print_cmds(mn_shell->cmds);
-		Exec_cmds(mn_shell);
-		Free_all(input, mn_shell);
 	}
 	free_env(mn_shell->envp);
 	free(mn_shell);
@@ -114,7 +66,7 @@ void	Minishell(char **envp)
 
 //posible main function
 /*
-int main(int argc,char ** argv, char **envp)
+int	main(int argc,char ** argv, char **envp)
 {
 	(void)argv;
 	if (argc != 1)
@@ -123,24 +75,24 @@ int main(int argc,char ** argv, char **envp)
 		return (1);
 	}
 	Minishell(envp);
-	return 0;
+	return (0);
 }*/
 
 // como se crear comandos
 /*cmd_list = malloc(sizeof(t_cmd));
 cmd_list->args = (char *[]){"echo", "hola", NULL};
-cmd_list->path = Get_cmd_path(cmd_list->args[0], envp);
+cmd_list->path = get_cmd_path(cmd_list->args[0], envp);
 cmd_list->input_fd = STDIN_FILENO;
 cmd_list->output_fd = STDOUT_FILENO;
 cmd_list->next = NULL;
 cmd_list->next = malloc(sizeof(t_cmd));
 cmd_list->next->args = (char *[]){"cat", NULL};
-cmd_list->next->path = Get_cmd_path(cmd_list->next->args[0], envp);
+cmd_list->next->path = get_cmd_path(cmd_list->next->args[0], envp);
 cmd_list->next->input_fd = input_fd;
 cmd_list->next->output_fd = -1;
 cmd_list->next->next = malloc(sizeof(t_cmd));
 cmd_list->next->next->args = (char *[]){"cat", "-e", NULL};
-cmd_list->next->next->path = Get_cmd_path(cmd_list->next->next->args[0], envp);
+cmd_list->next->next->path = get_cmd_path(cmd_list->next->next->args[0], envp);
 cmd_list->next->next->input_fd = -1;
 cmd_list->next->next->output_fd = STDOUT_FILENO;
 cmd_list->next->next->next = NULL;*/

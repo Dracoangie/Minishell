@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 20:27:35 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/06 21:58:24 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:19:21 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	find_env_line(char **envp, char *key)
 	return (-1);
 }
 
-char **delete_env_var(char **envp, char *key)
+char	**delete_env_var(char **envp, char *key)
 {
 	int	i;
 	int	key_len;

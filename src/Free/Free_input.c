@@ -6,21 +6,20 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:38 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/06 13:49:39 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:06:06 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "Minishell.h"
 
-int Free_input(char *input)
+int	free_input(char *input)
 {
 	if (input)
 		return (free(input), 1);
 	return (0);
 }
 
-int	Free_args(char **args)
+int	free_args(char **args)
 {
 	int	i;
 
@@ -36,7 +35,7 @@ int	Free_args(char **args)
 	return (1);
 }
 
-int	Free_strn(char **str, int j)
+int	free_strn(char **str, int j)
 {
 	if (!str[j])
 	{
@@ -48,8 +47,8 @@ int	Free_strn(char **str, int j)
 	return (0);
 }
 
-void Free_all(char *input, t_shell *shell)
+void	free_all(char *input, t_shell *shell)
 {
-	Free_input(input);
-	Free_shell(shell);
+	free_input(input);
+	free_shell(shell);
 }

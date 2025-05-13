@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:59:14 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/06 22:02:00 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:19:42 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	execute_pwd(void)
 {
 	char	*pwd;
-	
+
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
@@ -30,10 +30,10 @@ void	execute_env(char **envp, char *command)
 {
 	int	i;
 	int	index;
-	
+
 	i = 0;
 	index = find_env_line(envp, "PATH");
-	if	(index == -1 && ft_strcmp(command, "/bin/env") != 0)
+	if (index == -1 && ft_strcmp(command, "/bin/env") != 0)
 	{
 		ft_putstr_fd("env: command not found\n", 2);
 		return ;
@@ -46,10 +46,9 @@ void	execute_env(char **envp, char *command)
 			i++;
 		}
 	}
-	
 }
 
-char **execute_unset(char **envp, char *command)
+char	**execute_unset(char **envp, char *command)
 {
 	int		i;
 	char	**out;
@@ -59,8 +58,8 @@ char **execute_unset(char **envp, char *command)
 		return (NULL);
 	if (!out[1])
 	{
-		Free_args(out);
-		return (envp);		
+		free_args(out);
+		return (envp);
 	}
 	i = 1;
 	while (out[i])
@@ -68,6 +67,6 @@ char **execute_unset(char **envp, char *command)
 		envp = delete_env_var(envp, out[i]);
 		i++;
 	}
-	Free_args(out);
+	free_args(out);
 	return (envp);
 }

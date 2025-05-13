@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:42:42 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/12 14:45:59 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:24:54 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,32 +70,31 @@ int	ft_getline(char **line, size_t *len, int fd)
 	return (pos);
 }
 
-
-void ft_remove_arg(char **args, int index)
+void	ft_remove_arg(char **args, int index)
 {
-    int i;
+	int	i;
 
-    free(args[index]);
-    i = index;
-    while (args[i])
-    {
-        args[i] = args[i + 1];
-        i++;
-    }
+	free(args[index]);
+	i = index;
+	while (args[i])
+	{
+		args[i] = args[i + 1];
+		i++;
+	}
 }
 
-int		ft_argstr(const char **args, const char *str)
+int	ft_argstr(const char **args, const char *str)
 {
-    int i;
+	int	i;
 
-    if (!args || !str)
-        return (-1);
-    i = 0;
-    while (args[i])
-    {
-        if (ft_strcmp(args[i], str) == 0)
-            return (i);
-        i++;
-    }
-    return (-1);
+	if (!args || !str)
+		return (-1);
+	i = 0;
+	while (args[i])
+	{
+		if (ft_strcmp(args[i], str) == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
 }

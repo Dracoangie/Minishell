@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 14:13:55 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/13 14:27:03 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:18:25 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,60 +14,65 @@
 
 int	tcmd_count(const char *s)
 {
-    int	i;
-    int	result;
-    char	quote = '\0';
+	int		i;
+	int		result;
+	char	quote;
 
-    i = 0;
-    result = 0;
-    while (s[i])
-    {
-        if (s[i] == '"' || s[i] == '\'')
-        {
-            if (quote == '\0')
-                quote = s[i];
-            else if (quote == s[i])
-                quote = '\0';
-            i++;
-            continue;
-        }
-        if ((s[i] == '<' || s[i] == '>') && quote == '\0')
-        {
-            result++;
-            if (s[i + 1] == s[i])
-                i++;
-            i++;
-            continue;
-        }
-        if (s[i] != ' ' && s[i] != '"' && s[i] != '\'' && quote == '\0')
-        {
-            result++;
-            while (s[i] && s[i] != ' ' && s[i] != '"' && s[i] != '\'' &&
-                   s[i] != '<' && s[i] != '>' && quote == '\0')
-                i++;
-            continue;
-        }
-        i++;
-    }
-    return (result);
+	quote = '\0';
+	i = 0;
+	result = 0;
+	while (s[i])
+	{
+		if (s[i] == '"' || s[i] == '\'')
+		{
+			if (quote == '\0')
+				quote = s[i];
+			else if (quote == s[i])
+				quote = '\0';
+			i++;
+			continue ;
+		}
+		if ((s[i] == '<' || s[i] == '>') && quote == '\0')
+		{
+			result++;
+			if (s[i + 1] == s[i])
+				i++;
+			i++;
+			continue ;
+		}
+		if (s[i] != ' ' && s[i] != '"' && s[i] != '\'' && quote == '\0')
+		{
+			result++;
+			while (s[i] && s[i] != ' ' && s[i] != '"' && s[i] != '\''
+				&& s[i] != '<' && s[i] != '>' && quote == '\0')
+				i++;
+			continue ;
+		}
+		i++;
+	}
+	return (result);
 }
 
 char	**ft_split_with_quotes(const char *s, char c)
 {
 	char	**result;
-	int		i = 0, j = 0, start;
-	char	quote = '\0';
+	int		i;
+	int		j;
+	int		start;
+	char	quote;
 
+	i = 0;
+	j = 0;
+	quote = '\0';
 	result = ft_calloc(tcmd_count(s) + 2, sizeof(char *));
 	if (!result)
 		return (NULL);
-
 	while (s[i])
 	{
 		while (s[i] == c)
 			i++;
 		if (!s[i])
-			break;
+			break ;
 		start = i;
 		while (s[i])
 		{
@@ -79,14 +84,14 @@ char	**ft_split_with_quotes(const char *s, char c)
 					quote = '\0';
 			}
 			else if (quote == '\0' && (s[i] == c || s[i] == '<' || s[i] == '>'))
-				break;
+				break ;
 			i++;
 		}
 		if (i > start)
 		{
 			result[j++] = ft_substr(s, start, i - start);
 			if (!result[j - 1])
-				return (Free_args(result), NULL);
+				return (free_args(result), NULL);
 		}
 		if (quote == '\0' && (s[i] == '<' || s[i] == '>'))
 		{
@@ -97,7 +102,7 @@ char	**ft_split_with_quotes(const char *s, char c)
 				i++;
 			result[j++] = ft_substr(s, start, i - start);
 			if (!result[j - 1])
-				return (Free_args(result), NULL);
+				return (free_args(result), NULL);
 		}
 	}
 	result[j] = NULL;

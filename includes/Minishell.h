@@ -6,15 +6,15 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/12 15:11:36 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:14:29 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 
 # define MINISHELL_H
 
+# include "libft.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <stdlib.h>
@@ -23,9 +23,8 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-#include "libft.h"
 
-typedef struct s_cmd t_cmd;
+typedef struct s_cmd	t_cmd;
 
 //structs
 typedef struct s_cmd
@@ -36,6 +35,13 @@ typedef struct s_cmd
 	int		input_fd;
 	int		output_fd;
 }	t_cmd;
+
+typedef struct s_cmd_state
+{
+	t_cmd	*head;
+	t_cmd	*curr;
+	int		i;
+}	t_cmd_state;
 
 typedef struct s_heredoc
 {
@@ -56,32 +62,32 @@ typedef struct s_shell
 }	t_shell;
 
 //Init
-t_shell	*Init_shell(char **envp);
-t_cmd	*Init_cmd(char **args);
-int		Count_cmds(t_cmd *cmds);
+t_shell	*init_shell(char **envp);
+t_cmd	*init_cmd(char **args);
+int		count_cmds(t_cmd *cmds);
 
 //Errors
-void	Perr_shll(t_shell *shell, char *msg, int err_code);
-void	Perr_exit(t_shell *shell, char *msg);
-void	Perr_name(t_shell *shell, char* name, char *msg, int err_code);
-void	Perr_mem(t_shell *mn_shell);
-void	Perr_redir(t_shell *mn_shell, char *msg);
+void	perr_shll(t_shell *shell, char *msg, int err_code);
+void	perr_exit(t_shell *shell, char *msg);
+void	perr_name(t_shell *shell, char *name, char *msg, int err_code);
+void	perr_mem(t_shell *mn_shell);
+void	perr_redir(t_shell *mn_shell, char *msg);
 
 //Free
-int		Free_input(char *input);
-int		Free_args(char **args);
-int		Free_strn(char **str, int j);
-void	Free_cmds(t_cmd *cmds);
-void	Free_shell(t_shell *shell);
-void	Free_all(char *input, t_shell *shell);
+int		free_input(char *input);
+int		free_args(char **args);
+int		free_strn(char **str, int j);
+void	free_cmds(t_cmd *cmds);
+void	free_shell(t_shell *shell);
+void	free_all(char *input, t_shell *shell);
 void	free_env(char **env_copy);
 
 //Parse
-t_cmd	*Parse_input(char *input, t_shell *mn_shell);
-t_cmd	*Parse_to_cmds(char const *s, char c, t_shell *mn_shell);
-int		Parse_files(t_shell *mn_shell, t_cmd *current, t_cmd *cmds);
-int		Check_exit_cmd(char *input);
-int		Here_doc(char *delimiter, t_shell *mn_shell);
+t_cmd	*parse_input(char *input, t_shell *mn_shell);
+t_cmd	*parse_to_cmds(char const *s, char c, t_shell *mn_shell);
+int		parse_files(t_shell *mn_shell, t_cmd *current, t_cmd *cmds);
+int		check_exit_cmd(char *input);
+int		here_doc(char *delimiter, t_shell *mn_shell);
 char	**ft_split_with_quotes(const char *s, char c);
 
 //Utils
@@ -92,24 +98,25 @@ void	ft_print_cmds(t_cmd *cmd_list);
 int		ft_argstr(const char **args, const char *str);
 int		ft_count_args(char **args);
 char	*ft_remove_quotes(const char *str);
+int		ft_fd_null(t_shell *mn_shell);
 
 //Commands
-char	*Check_cmd(t_shell *mn_shell, char	**args);
-void	Execute_command(t_cmd *cmd, t_shell *mn_shell);
-char	*Get_cmd_path(char *cmd, char **envp);
+char	*check_cmd(t_shell *mn_shell, char	**args);
+void	execute_command(t_cmd *cmd, t_shell *mn_shell);
+char	*get_cmd_path(char *cmd, char **envp);
 
 //Execution
-void	Close_pipes(t_shell *mn_shell);
-void	Exec_cmds(t_shell *mn_shell);
+void	close_pipes(t_shell *mn_shell);
+void	exec_cmds(t_shell *mn_shell);
 
 //Minishell
-void	Minishell(char **envp);
+void	minishell(char **envp);
 
 //Builtins
 void	execute_pwd(void);
 void	execute_env(char **envp, char *command);
 char	**execute_unset(char **envp, char *command);
-int		Parse_echo(t_cmd *cmds, t_shell *mn_shell);
+int		parse_echo(t_cmd *cmds, t_shell *mn_shell);
 
 //Builtins_utils
 int		find_env_line(char **envp, char *key);
