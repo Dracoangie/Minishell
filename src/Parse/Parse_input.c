@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/12 15:12:24 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:27:25 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ t_cmd	*Parse_input(char *input, t_shell *mn_shell)
 			return (Free_cmds(cmds), NULL);
 		if(Builtin_cmds(current, mn_shell))
 			return (Free_cmds(cmds), NULL);
-		Parse_quotes(cmds);
+		Parse_quotes(current);
 		current->path = Check_cmd(mn_shell, current->args);
 		if (!current->path)
 			return (Free_cmds(cmds), NULL);

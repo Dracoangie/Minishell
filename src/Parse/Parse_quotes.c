@@ -6,13 +6,13 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 14:13:55 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/12 14:21:49 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:27:03 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
-int	cmd_count(const char *s)
+int	tcmd_count(const char *s)
 {
     int	i;
     int	result;
@@ -25,10 +25,7 @@ int	cmd_count(const char *s)
         if (s[i] == '"' || s[i] == '\'')
         {
             if (quote == '\0')
-            {
                 quote = s[i];
-                result++;
-            }
             else if (quote == s[i])
                 quote = '\0';
             i++;
@@ -57,50 +54,52 @@ int	cmd_count(const char *s)
 
 char	**ft_split_with_quotes(const char *s, char c)
 {
-    char	**result;
-    int		i = 0, j = 0, start;
-    char	quote = '\0';
+	char	**result;
+	int		i = 0, j = 0, start;
+	char	quote = '\0';
 
-    result = ft_calloc(sizeof(char *), (cmd_count(s) + 1));
-    if (!result)
-        return (NULL);
-    while (s[i])
-    {
-        while (s[i] == c && s[i])
-            i++;
-        if (!s[i])
-            break;
-        start = i;
-        if (s[i] == '\'' || s[i] == '"')
-        {
-            quote = s[i];
+	result = ft_calloc(tcmd_count(s) + 2, sizeof(char *));
+	if (!result)
+		return (NULL);
+
+	while (s[i])
+	{
+		while (s[i] == c)
 			i++;
-            while (s[i] && s[i] != quote)
-                i++;
-			if (s[i] == quote)
+		if (!s[i])
+			break;
+		start = i;
+		while (s[i])
+		{
+			if ((s[i] == '\'' || s[i] == '"'))
+			{
+				if (quote == '\0')
+					quote = s[i];
+				else if (quote == s[i])
+					quote = '\0';
+			}
+			else if (quote == '\0' && (s[i] == c || s[i] == '<' || s[i] == '>'))
+				break;
+			i++;
+		}
+		if (i > start)
+		{
+			result[j++] = ft_substr(s, start, i - start);
+			if (!result[j - 1])
+				return (Free_args(result), NULL);
+		}
+		if (quote == '\0' && (s[i] == '<' || s[i] == '>'))
+		{
+			start = i;
+			if (s[i + 1] == s[i])
+				i += 2;
+			else
 				i++;
-			quote = '\0';
-        }
-        else if ((s[i] == '<' || s[i] == '>') && quote == '\0')
-        {
-            if (s[i + 1] == s[i])
-                i += 2;
-            else
-                i++;
-        }
-        else
-        {
-            while (s[i] && s[i] != c && !(s[i] == '\'' || s[i] == '"') &&
-                   !(s[i] == '<' || s[i] == '>'))
-                i++;
-        }
-        result[j++] = ft_substr(s, start, i - start);
-        if (!result[j - 1])
-        {
-            Free_args(result);
-            return (NULL);
-        }
-    }
-    result[j] = NULL;
-    return (result);
+			result[j++] = ft_substr(s, start, i - start);
+			if (!result[j - 1])
+				return (Free_args(result), NULL);
+		}
+	}
+	result[j] = NULL;
+	return (result);
 }
