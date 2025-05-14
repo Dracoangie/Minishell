@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:07:17 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/13 19:18:12 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:37:05 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,65 +43,65 @@ int	handle_file_open(t_shell *mn_shell, char *file, int flags, int *fd)
 	return (1);
 }
 
-int	parse_files(t_shell *mn_shell, t_cmd *current, t_cmd *cmds)
+static int	is_redirection_case(t_shell *mn, t_cmd *cmd, int *i)
+{
+	int	fd;
+
+	if (!cmd->args[*i + 1])
+		return (perr_shll(mn, "Missing file", 1), 0);
+	if (cmd->args[*i][0] == '>' && cmd->args[*i][1] == '>')
+		fd = handle_file_open(mn, cmd->args[*i + 1],
+			O_WRONLY | O_CREAT | O_APPEND, &cmd->output_fd);
+	else if (cmd->args[*i][0] == '<' && cmd->args[*i][1] == '<')
+	{
+		fd = here_doc(cmd->args[*i + 1], mn);
+		if (fd != -1)
+			cmd->input_fd = fd;
+	}
+	else if (cmd->args[*i][0] == '<' && cmd->args[*i][1] == '\0')
+		fd = handle_file_open(mn, cmd->args[*i + 1],
+			O_RDONLY, &cmd->input_fd);
+	else if (cmd->args[*i][0] == '>')
+		fd = handle_file_open(mn, cmd->args[*i + 1],
+			O_WRONLY | O_CREAT | O_TRUNC, &cmd->output_fd);
+	else
+		return (0);
+	if (fd == -1)
+		return (0);
+	return (ft_remove_arg(cmd->args, *i), ft_remove_arg(cmd->args, *i), 1);
+}
+
+static int	handle_command_file(t_shell *mn, t_cmd *cmd, int *i)
+{
+	if (command_uses_files(cmd->args[0]))
+	{
+		if (!handle_file_open(mn, cmd->args[*i], O_RDONLY, &cmd->input_fd))
+			return (0);
+		(*i)++;
+		return (1);
+	}
+	return (0);
+}
+
+int	parse_files(t_shell *mn, t_cmd *cmd, t_cmd *first)
 {
 	int	i;
-	int	heredoc_fd;
 
 	i = 1;
-	while (current->args[i])
+	while (cmd->args[i])
 	{
-		if (current->args[i][0] == '-')
-		{
+		if (cmd->args[i][0] == '-')
 			i++;
-			continue ;
-		}
-		else if (current->args[i][0] == '>' && current->args[i][1] == '>')
-		{
-			if (!handle_file_open(mn_shell, current->args[i + 1],
-					O_WRONLY | O_CREAT | O_APPEND, &current->output_fd))
-				return (0);
-			ft_remove_arg(current->args, i);
-			ft_remove_arg(current->args, i);
-		}
-		else if (current->args[i][0] == '<' && current->args[i][1] == '<')
-		{
-			heredoc_fd = here_doc(current->args[i + 1], mn_shell);
-			if (heredoc_fd == -1)
-				return (0);
-			current->input_fd = heredoc_fd;
-			ft_remove_arg(current->args, i);
-			ft_remove_arg(current->args, i);
-		}
-		else if (current->args[i][0] == '<' && current->args[i][1] == '\0')
-		{
-			if (!handle_file_open(mn_shell, current->args[i + 1], O_RDONLY,
-					&current->input_fd))
-				return (0);
-			ft_remove_arg(current->args, i);
-			ft_remove_arg(current->args, i);
-		}
-		else if (current->args[i][0] == '>')
-		{
-			if (!handle_file_open(mn_shell, current->args[i + 1],
-					O_WRONLY | O_CREAT | O_TRUNC, &current->output_fd))
-				return (0);
-			ft_remove_arg(current->args, i);
-			ft_remove_arg(current->args, i);
-		}
-		else if (command_uses_files(current->args[0]))
-		{
-			if (!handle_file_open(mn_shell, current->args[i], O_RDONLY,
-					&current->input_fd))
-				return (0);
-			i++;
-		}
+		else if (is_redirection_case(mn, cmd, &i))
+			continue;
+		else if (handle_command_file(mn, cmd, &i))
+			continue;
 		else
 			i++;
 	}
-	if (current == cmds && current->input_fd == -1)
-		current->input_fd = STDIN_FILENO;
-	if (!current->next && current->output_fd == -1)
-		current->output_fd = STDOUT_FILENO;
+	if (cmd == first && cmd->input_fd == -1)
+		cmd->input_fd = STDIN_FILENO;
+	if (!cmd->next && cmd->output_fd == -1)
+		cmd->output_fd = STDOUT_FILENO;
 	return (1);
 }
