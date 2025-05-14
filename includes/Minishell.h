@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/13 18:14:29 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/14 16:02:20 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	minishell(char **envp);
 void	execute_pwd(void);
 void	execute_env(char **envp, char *command);
 char	**execute_unset(char **envp, char *command);
-int		parse_echo(t_cmd *cmds, t_shell *mn_shell);
+int		execute_echo(t_cmd *cmds, t_shell *mn_shell);
 
 //Builtins_utils
 int		find_env_line(char **envp, char *key);

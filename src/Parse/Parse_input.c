@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/13 19:08:06 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/14 21:03:10 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,18 @@ int	check_exit_cmd(char *input)
 int	builtin_cmds(t_cmd *cmds, t_shell *mn_shell)
 {
 	if (ft_strcmp(cmds->args[0], "echo") == 0)
-		return (parse_echo(cmds, mn_shell));
+		return (0);
+	//	return (execute_echo(cmds, mn_shell));
 	else if (ft_strcmp(cmds->args[0], "cd") == 0)
 		return (1);
 	else if (ft_strcmp(cmds->args[0], "pwd") == 0)
-		return (1);
+		return (0);
 	else if (ft_strcmp(cmds->args[0], "export") == 0)
 		return (1);
 	else if (ft_strcmp(cmds->args[0], "unset") == 0)
-		return (1);
+		return (execute_unset(mn_shell->envp, cmds->args[0]), 0);
 	else if (ft_strcmp(cmds->args[0], "env") == 0)
-		return (1);
+		return (0);
 	return (0);
 }
 

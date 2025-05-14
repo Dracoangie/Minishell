@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:07:17 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/14 14:37:05 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:30:22 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ int	handle_file_open(t_shell *mn_shell, char *file, int flags, int *fd)
 	if (*fd < 0)
 	{
 		if (errno == ENOENT)
-			return (perr_shll(mn_shell, "Error: File not found", 2), 0);
+			return (perr_name(mn_shell, file,
+				"No such file or directory", 1), 0);
 		else if (errno == EACCES)
-			return (perr_shll(mn_shell, "Error: Permission denied", 1), 0);
+			return (perr_name(mn_shell, file, "Permission denied", 1), 0);
 		else
-			return (perr_shll(mn_shell, "Error: Failed to open file", 1), 0);
+			return (perr_name(mn_shell, file, "Failed to open file", 1), 0);
 	}
 	return (1);
 }
@@ -47,8 +48,8 @@ static int	is_redirection_case(t_shell *mn, t_cmd *cmd, int *i)
 {
 	int	fd;
 
-	if (!cmd->args[*i + 1])
-		return (perr_shll(mn, "Missing file", 1), 0);
+	if(!cmd->args[*i + 1])
+		return (0);
 	if (cmd->args[*i][0] == '>' && cmd->args[*i][1] == '>')
 		fd = handle_file_open(mn, cmd->args[*i + 1],
 			O_WRONLY | O_CREAT | O_APPEND, &cmd->output_fd);
@@ -66,17 +67,23 @@ static int	is_redirection_case(t_shell *mn, t_cmd *cmd, int *i)
 			O_WRONLY | O_CREAT | O_TRUNC, &cmd->output_fd);
 	else
 		return (0);
-	if (fd == -1)
-		return (0);
+	if (fd == 0)
+		return (-1);
 	return (ft_remove_arg(cmd->args, *i), ft_remove_arg(cmd->args, *i), 1);
 }
 
 static int	handle_command_file(t_shell *mn, t_cmd *cmd, int *i)
 {
+	
+	if (cmd->args[*i][0] == '-')
+	{
+		(*i)++;
+		return (1);
+	}
 	if (command_uses_files(cmd->args[0]))
 	{
 		if (!handle_file_open(mn, cmd->args[*i], O_RDONLY, &cmd->input_fd))
-			return (0);
+			return (-1);
 		(*i)++;
 		return (1);
 	}
@@ -86,15 +93,20 @@ static int	handle_command_file(t_shell *mn, t_cmd *cmd, int *i)
 int	parse_files(t_shell *mn, t_cmd *cmd, t_cmd *first)
 {
 	int	i;
+	int aux;
 
 	i = 1;
 	while (cmd->args[i])
 	{
-		if (cmd->args[i][0] == '-')
-			i++;
-		else if (is_redirection_case(mn, cmd, &i))
+		aux = is_redirection_case(mn, cmd, &i);
+		if (aux == -1)
+			return (0);
+		else if (aux == 1)
 			continue;
-		else if (handle_command_file(mn, cmd, &i))
+		aux = handle_command_file(mn, cmd, &i);
+		if (aux == -1)
+			return (0);
+		else if (aux == 1)
 			continue;
 		else
 			i++;
