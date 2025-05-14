@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/14 16:02:20 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/14 21:41:55 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -110,16 +111,10 @@ void	close_pipes(t_shell *mn_shell);
 void	exec_cmds(t_shell *mn_shell);
 
 //Minishell
-void	minishell(char **envp);
+void	minishell();
 
-//Builtins
-void	execute_pwd(void);
-void	execute_env(char **envp, char *command);
-char	**execute_unset(char **envp, char *command);
-int		execute_echo(t_cmd *cmds, t_shell *mn_shell);
-
-//Builtins_utils
-int		find_env_line(char **envp, char *key);
-char	**delete_env_var(char **envp, char *key);
+//signals
+void	handle_sigint(int sig);
+void	handle_signals(void);
 
 #endif
