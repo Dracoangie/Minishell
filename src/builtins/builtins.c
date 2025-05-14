@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:59:14 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/13 19:19:42 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/14 23:26:08 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,3 +70,4 @@ char	**execute_unset(char **envp, char *command)
 	free_args(out);
 	return (envp);
 }
+

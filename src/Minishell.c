@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/14 21:48:13 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/14 22:48:40 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	minishell_loop(t_shell *mn_shell)
 
 	input = readline("Minishell> ");
 	if (!input)
-		return (0);
+		return (1);
 	if (check_exit_cmd(input))
 		return (1);
 	if (input[0] == '\0')

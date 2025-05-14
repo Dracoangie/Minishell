@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/14 21:41:55 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/14 22:38:50 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,11 @@ void	minishell();
 //signals
 void	handle_sigint(int sig);
 void	handle_signals(void);
+
+//Builtins
+int		execute_echo(t_cmd *cmds, t_shell *mn_shell);
+char	**execute_unset(char **envp, char *command);
+int		find_env_line(char **envp, char *key);
+char	**delete_env_var(char **envp, char *key);
 
 #endif
