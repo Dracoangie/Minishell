@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/14 21:03:10 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/15 01:01:32 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	builtin_cmds(t_cmd *cmds, t_shell *mn_shell)
 {
 	if (ft_strcmp(cmds->args[0], "echo") == 0)
 		return (0);
-	//	return (execute_echo(cmds, mn_shell));
 	else if (ft_strcmp(cmds->args[0], "cd") == 0)
 		return (1);
 	else if (ft_strcmp(cmds->args[0], "pwd") == 0)
@@ -98,14 +97,14 @@ t_cmd	*parse_input(char *input, t_shell *mn_shell)
 	else if (cmds->args[0] == NULL)
 		return (free_cmds(cmds), NULL);
 	current = cmds;
-	ft_print_cmds(cmds);
 	while (current)
 	{
 		if (parse_redirect(current, mn_shell) == 1)
 			return (free_cmds(cmds), NULL);
+		parse_env(current, mn_shell);
 		if (builtin_cmds(current, mn_shell))
 			return (free_cmds(cmds), NULL);
-		parse_quotes(current);
+		ft_print_cmds(cmds);
 		current->path = check_cmd(mn_shell, current->args);
 		if (!current->path)
 			return (free_cmds(cmds), NULL);

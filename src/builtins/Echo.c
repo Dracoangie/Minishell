@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 14:53:07 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/14 21:58:32 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/15 01:05:35 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,6 @@ char *expand_arg(const char *arg, t_shell *mn_shell)
 		return (NULL);
 	if (ft_strcmp(arg, "$?") == 0)
 		return (ft_itoa(mn_shell->last_exit_code));
-	if (ft_strcmp(arg, "$SHLVL") == 0)
-		return (ft_itoa(mn_shell->lvl));
-
 	varname = arg + 1;
 	val = get_env_value(varname, mn_shell->envp);
 	if (val)
@@ -49,19 +46,20 @@ char *expand_arg(const char *arg, t_shell *mn_shell)
 		return (ft_strdup(""));
 }
 
-void expand_args(t_cmd *cmd, t_shell *mn_shell)
+int execute_echo(t_cmd *cmds, t_shell *mn_shell)
 {
-	int i = 0;
+	int i = 1;
 	char *expanded;
 
-	while (cmd->args && cmd->args[i])
+	while (cmds->args[i])
 	{
-		expanded = expand_arg(cmd->args[i], mn_shell);
+		expanded = expand_arg(cmds->args[i], mn_shell);
 		if (expanded)
 		{
-			free(cmd->args[i]);
-			cmd->args[i] = expanded;
+			free(cmds->args[i]);
+			cmds->args[i] = expanded;
 		}
 		i++;
 	}
+	return (0);
 }

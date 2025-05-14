@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/14 22:38:50 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/15 01:05:55 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void	free_env(char **env_copy);
 t_cmd	*parse_input(char *input, t_shell *mn_shell);
 t_cmd	*parse_to_cmds(char const *s, char c, t_shell *mn_shell);
 int		parse_files(t_shell *mn_shell, t_cmd *current, t_cmd *cmds);
+void	parse_env(t_cmd *cmd, t_shell *mn_shell);
+void	parse_quotes(t_cmd *cmd);
 int		check_exit_cmd(char *input);
 int		here_doc(char *delimiter, t_shell *mn_shell);
 char	**ft_split_with_quotes(const char *s, char c);
@@ -121,6 +123,7 @@ void	handle_signals(void);
 int		execute_echo(t_cmd *cmds, t_shell *mn_shell);
 char	**execute_unset(char **envp, char *command);
 int		find_env_line(char **envp, char *key);
+char	*get_env_value(const char *name, char **envp);
 char	**delete_env_var(char **envp, char *key);
 
 #endif
