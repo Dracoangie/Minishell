@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/13 18:17:07 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/14 21:48:13 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	minishell_loop(t_shell *mn_shell)
 
 	input = readline("Minishell> ");
 	if (!input)
-		return (perr_shll(mn_shell, "readline error", 1), 1);
+		return (0);
 	if (check_exit_cmd(input))
 		return (1);
 	if (input[0] == '\0')

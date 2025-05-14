@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 14:53:07 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/14 18:37:48 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/14 21:58:32 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ char *get_env_value(const char *name, char **envp)
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
-			return envp[i] + len + 1;
+			return (envp[i] + len + 1);
 		i++;
 	}
-	return NULL;
+	return (NULL);
 }
 
 char *expand_arg(const char *arg, t_shell *mn_shell)
@@ -32,54 +32,36 @@ char *expand_arg(const char *arg, t_shell *mn_shell)
 	const char *varname;
 
 	if (!arg)
-		return NULL;
+		return (NULL);
 
 	if (arg[0] != '$')
-		return strdup(arg);
-
+		return (NULL);
 	if (ft_strcmp(arg, "$?") == 0)
-		return ft_itoa(mn_shell->last_exit_code);
-
+		return (ft_itoa(mn_shell->last_exit_code));
 	if (ft_strcmp(arg, "$SHLVL") == 0)
-		return ft_itoa(mn_shell->lvl);
+		return (ft_itoa(mn_shell->lvl));
 
 	varname = arg + 1;
 	val = get_env_value(varname, mn_shell->envp);
 	if (val)
-		return strdup(val);
+		return (ft_strdup(val));
 	else
-	{
-		char *empty = malloc(1);
-		if (empty)
-			empty[0] = '\0';
-		return empty;
-	}
+		return (ft_strdup(""));
 }
 
-int execute_echo(t_cmd *cmds, t_shell *mn_shell)
+void expand_args(t_cmd *cmd, t_shell *mn_shell)
 {
-	int i = 1;
-	int newline = 1;
+	int i = 0;
+	char *expanded;
 
-	if (cmds->args[1] && strcmp(cmds->args[1], "-n") == 0)
+	while (cmd->args && cmd->args[i])
 	{
-		newline = 0;
-		i = 2;
-	}
-	while (cmds->args[i])
-	{
-		char *expanded = expand_arg(cmds->args[i], mn_shell);
+		expanded = expand_arg(cmd->args[i], mn_shell);
 		if (expanded)
 		{
-			printf("%s", expanded);
-			free(expanded);
+			free(cmd->args[i]);
+			cmd->args[i] = expanded;
 		}
-		if (cmds->args[i + 1])
-			printf(" ");
 		i++;
 	}
-	if (newline)
-		printf("\n");
-	mn_shell->last_exit_code = 0;
-	return 1;
 }
