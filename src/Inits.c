@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:26:05 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/13 18:01:58 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:41:42 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,28 @@
 
 char	**init_env(char **env)
 {
-	int		count;
-	int		i;
+	int		count = 0;
+	int		i = -1;
 	char	**env_copy;
 
-	count = 0;
-	i = -1;
 	while (env[count])
 		count++;
 	env_copy = malloc((count + 1) * sizeof(char *));
+	if (!env_copy)
+		return (NULL);
 	while (++i < count)
-		env_copy[i] = strdup(env[i]);
+	{
+		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
+		{
+			int lvl = ft_atoi(env[i] + 6);
+			char *new_lvl = ft_itoa(lvl + 1);
+			char *shlvl = ft_strjoin("SHLVL=", new_lvl);
+			free(new_lvl);
+			env_copy[i] = shlvl;
+		}
+		else
+			env_copy[i] = ft_strdup(env[i]);
+	}
 	env_copy[count] = NULL;
 	return (env_copy);
 }

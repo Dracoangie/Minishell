@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 22:34:49 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/15 01:13:54 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:38:11 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,26 @@ char *get_expand_arg(const char *str, t_shell *mn_shell)
 			free(expanded);
 		}
 		else
-			i++;
+		{
+			while (str[i] &&
+				((quote == '\'' && str[i] != '\'') ||
+				(quote == '"'  && str[i] != '$' && str[i] != '"') ||
+				(quote == '\0' && str[i] != '$' && str[i] != '\'' && str[i] != '"')))
+				i++;
+			if (i > start)
+			{
+				char *tmp = ft_substr(str, start, i - start);
+				if (!tmp)
+					continue;
+				char *tmp2 = result;
+				result = ft_strjoin(result, tmp);
+				free(tmp2);
+				free(tmp);
+			}
+		}
+
 	}
-	return result;
+	return (result);
 }
 
 void	parse_env(t_cmd *cmd, t_shell *mn_shell)
