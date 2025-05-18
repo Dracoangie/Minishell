@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 14:19:04 by tu_nombre_d       #+#    #+#             */
-/*   Updated: 2025/05/13 17:31:37 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/16 22:50:57 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	set_childs(t_shell *mn_shell)
 		{
 			set_dups_close(mn_shell, i);
 			execute_command(current, mn_shell);
-			exit(EXIT_SUCCESS);
+			exit(mn_shell->last_exit_code);
 		}
 		current = current->next;
 		i++;

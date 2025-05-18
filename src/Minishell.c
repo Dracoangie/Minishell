@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/14 22:48:40 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/18 21:17:16 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,13 @@ static int	minishell_loop(t_shell *mn_shell)
 	input = readline("Minishell> ");
 	if (!input)
 		return (1);
-	if (check_exit_cmd(input))
-		return (1);
 	if (input[0] == '\0')
 		return (free(input), 0);
 	add_history(input);
 	mn_shell->cmds = parse_input(input, mn_shell);
 	if (!mn_shell->cmds)
 		return (free(input), 0);
+	execute_exit(mn_shell->cmds, mn_shell);
 	mn_shell->n_cmds = count_cmds(mn_shell->cmds);
 	ft_print_cmds(mn_shell->cmds);
 	exec_cmds(mn_shell);
@@ -47,21 +46,24 @@ static int	minishell_loop(t_shell *mn_shell)
 	return (0);
 }
 
-void	minishell(char **envp)
+int	minishell(char **envp)
 {
 	t_shell	*mn_shell;
+	int		exit_code;
 
 	mn_shell = init_shell(envp);
 	if (!mn_shell)
-		return ;
+		return (1);
 	while (1)
 	{
 		if (minishell_loop(mn_shell))
 			break ;
 	}
+	exit_code = mn_shell->last_exit_code;
 	free_env(mn_shell->envp);
 	free(mn_shell);
 	rl_clear_history();
+	return (exit_code);
 }
 
 //posible main function

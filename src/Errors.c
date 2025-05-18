@@ -51,3 +51,11 @@ void	perr_redir(t_shell *mn_shell, char *msg)
 	write(2, "\'\n", 2);
 	mn_shell->last_exit_code = 2;
 }
+
+void	perr_export(t_shell *mn_shell, char *msg)
+{
+	write(2, "bash: export: `", 16);
+	write(2, msg, ft_strlen(msg));
+	write(2, "\': not a valid identifier\n", 27);
+	mn_shell->last_exit_code = 1;
+}

@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/15 11:20:41 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/18 21:15:07 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_cmd
 	t_cmd	*next;
 	char	**args;
 	char	*path;
+	int		is_builtin;
 	int		input_fd;
 	int		output_fd;
 }	t_cmd;
@@ -89,6 +90,8 @@ t_cmd	*parse_to_cmds(char const *s, char c, t_shell *mn_shell);
 int		parse_files(t_shell *mn_shell, t_cmd *current, t_cmd *cmds);
 void	parse_env(t_cmd *cmd, t_shell *mn_shell);
 void	parse_quotes(t_cmd *cmd);
+int		parse_redirect(t_cmd *cmd, t_shell *mn_shell);
+int		parse_builtins(t_cmd *cmds);
 int		check_exit_cmd(char *input);
 int		here_doc(char *delimiter, t_shell *mn_shell);
 char	**ft_split_with_quotes(const char *s, char c);
@@ -102,18 +105,20 @@ int		ft_argstr(const char **args, const char *str);
 int		ft_count_args(char **args);
 char	*ft_remove_quotes(const char *str);
 int		ft_fd_null(t_shell *mn_shell);
+int		ft_first_cmd(t_cmd *cmds, t_cmd *current);
 
 //Commands
 char	*check_cmd(t_shell *mn_shell, char	**args);
 void	execute_command(t_cmd *cmd, t_shell *mn_shell);
 char	*get_cmd_path(char *cmd, char **envp);
+int		exec_builtin_cmds(t_cmd *cmds, t_shell *mn_shell);
 
 //Execution
 void	close_pipes(t_shell *mn_shell);
 void	exec_cmds(t_shell *mn_shell);
 
 //Minishell
-void	minishell();
+int		minishell(char **envp);
 
 //signals
 void	handle_sigint(int sig);
@@ -122,6 +127,7 @@ void	handle_signals(void);
 //Builtins
 int		execute_echo(t_cmd *cmds, t_shell *mn_shell);
 char	**execute_unset(char **envp, char *command);
+int		execute_exit(t_cmd *cmds, t_shell *mn_shell);
 int		find_env_line(char **envp, char *key);
 char	*get_env_value(const char *name, char **envp);
 char	**delete_env_var(char **envp, char *key);

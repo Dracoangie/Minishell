@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:42:42 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/13 18:05:28 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/16 22:40:41 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,28 @@ void	ft_print_cmds(t_cmd *cmd_list)
 
 char	*ft_remove_quotes(const char *str)
 {
-	int		i;
-	int		j;
-	char	*new_str;
+	int		i = 0;
+	int		j = 0;
+	char	quote = '\0';
+	char	*new_str = malloc(strlen(str) + 1);
 
-	i = 0;
-	j = 0;
-	new_str = malloc(strlen(str) + 1);
 	if (!new_str)
 		return (NULL);
 	while (str[i])
 	{
-		if (str[i] != '\'' && str[i] != '"')
-			new_str[j++] = str[i];
-		i++;
+		if ((str[i] == '\'' || str[i] == '"') && quote == '\0')
+		{
+			quote = str[i];
+			i++;
+			continue;
+		}
+		if (str[i] == quote)
+		{
+			quote = '\0';
+			i++;
+			continue;
+		}
+		new_str[j++] = str[i++];
 	}
 	new_str[j] = '\0';
 	return (new_str);
@@ -79,4 +87,11 @@ int	ft_fd_null(t_shell *mn_shell)
 	}
 	dup2(fd_null, STDOUT_FILENO);
 	return (fd_null);
+}
+
+int	ft_first_cmd(t_cmd *cmds, t_cmd *current)
+{
+	if (cmds == current)
+		return (1);
+	return (0);
 }

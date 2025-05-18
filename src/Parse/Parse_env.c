@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 22:34:49 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/15 11:38:11 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/16 22:54:03 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ char *get_expand_arg(const char *str, t_shell *mn_shell)
 				quote = str[i];
 			else if (quote == str[i])
 				quote = '\0';
+			char *tmp = ft_substr(str, i, 1);
+			char *tmp2 = result;
+			result = ft_strjoin(result, tmp);
+			free(tmp2);
+			free(tmp);
 			i++;
 			continue;
 		}
@@ -123,4 +128,5 @@ void	parse_env(t_cmd *cmd, t_shell *mn_shell)
 		i++;
 	}
 	parse_quotes(cmd);
+	cmd->is_builtin = parse_builtins(cmd);
 }
