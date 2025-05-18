@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/18 21:39:27 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/18 21:53:00 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ t_cmd	*parse_input(char *input, t_shell *mn_shell)
 		if (parse_redirect(current, mn_shell) == 1)
 			return (free_cmds(cmds), NULL);
 		parse_env(current, mn_shell);
-		ft_print_cmds(cmds);
 		if (!current->is_builtin)
 		{
 			current->path = check_cmd(mn_shell, current->args);

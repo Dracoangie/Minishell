@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:07:17 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/18 20:15:58 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/18 21:52:41 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,9 @@ int	parse_files(t_shell *mn, t_cmd *cmd, t_cmd *first)
 		else
 			i++;
 	}
-	ft_print_cmds(cmd);
 	if (cmd == first && cmd->input_fd == -1)
 		cmd->input_fd = STDIN_FILENO;
 	if (!cmd->next && cmd->output_fd == -1)
 		cmd->output_fd = STDOUT_FILENO;
-	ft_print_cmds(cmd);
 	return (1);
 }
