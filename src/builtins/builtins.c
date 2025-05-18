@@ -6,7 +6,7 @@
 /*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:59:14 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/14 23:26:08 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/19 03:13:21 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,3 +71,84 @@ char	**execute_unset(char **envp, char *command)
 	return (envp);
 }
 
+int	execute_cd(t_shell *mn_shell, char **args)
+{
+	char	cwd[PATH_MAX];
+	char	*target;
+	char	*oldpwd;
+
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+	{
+		perror("getcwd");
+		return 1;
+	}
+	oldpwd = ft_strdup(cwd);
+
+	if (args[1] == NULL)
+	{
+		target = get_env_value("HOME", mn_shell->envp);
+		if (target == NULL)
+		{
+			fprintf(stderr, "cd: HOME not set\n");
+			return 1;
+		}
+	}
+	else if (ft_strcmp(args[1], "-") == 0)
+	{
+		target = get_env_value("OLDPWD", mn_shell->envp);
+		if (target == NULL)
+		{
+			fprintf(stderr, "cd: OLDPWD not set\n");
+			return 1;
+		}
+		printf("%s\n", target);
+	}
+	else
+		target = args[1];
+	if (chdir(target) != 0)
+	{
+		perror("cd");
+		free(oldpwd);
+		return 1;
+	}
+	//to do
+	update_env_var(&(mn_shell->envp), "OLDPWD", oldpwd);
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		update_env_var(&(mn_shell->envp), "PWD", cwd);
+	else
+		perror("getcwd");
+	free(oldpwd);
+	return 0;
+}
+
+int	execute_export(t_shell *mn_shell, char **args)
+{
+	int		i;
+	char	*key;
+	char	*value;
+	char	*equal_pos;
+
+	i = 1;
+	while (args[i])
+	{
+		equal_pos = ft_strchr(args[i], '=');
+		if (!is_valid_identifier(args[i]))
+		{
+			ft_putstr_fd("export: not a valid identifier\n", 2);
+			i++;
+			continue;
+		}
+		if (equal_pos)
+		{
+			*equal_pos = '\0';
+			key = args[i];
+			value = equal_pos + 1;
+			update_env_var(&(mn_shell->envp), key, value);
+			*equal_pos = '=';
+		}
+		else if (!get_env_value(args[i], mn_shell->envp))
+			update_env_var(&(mn_shell->envp), args[i], "");
+		i++;
+	}
+	return 0;
+}
