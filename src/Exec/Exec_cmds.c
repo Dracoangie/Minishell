@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 14:19:04 by tu_nombre_d       #+#    #+#             */
-/*   Updated: 2025/05/16 22:50:57 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/18 22:31:21 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,13 @@ void	exec_cmds(t_shell *mn_shell)
 		return ;
 	if (!create_pipes(mn_shell))
 		return ;
-	set_childs(mn_shell);
+	if (mn_shell->n_cmds == 1 && mn_shell->cmds->is_builtin)
+	{
+		execute_command(mn_shell->cmds, mn_shell);
+		return ;
+	}
+	else
+		set_childs(mn_shell);
 	close_pipes(mn_shell);
 	i = -1;
 	while (++i < mn_shell->n_cmds)

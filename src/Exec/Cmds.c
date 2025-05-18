@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:40:01 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/18 21:15:37 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/18 22:31:10 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,6 @@ void	execute_command(t_cmd *cmd, t_shell *mn_shell)
 		if (execve(cmd->path, cmd->args, mn_shell->envp) == -1)
 		{
 			perr_shll(mn_shell, "execve error", EXIT_FAILURE);
-			free_args(cmd->args);
-			free(cmd->path);
-			free(mn_shell->childs);
-			close_pipes(mn_shell);
 			mn_shell->last_exit_code = EXIT_FAILURE;
 		}
 		else
@@ -92,9 +88,6 @@ void	execute_command(t_cmd *cmd, t_shell *mn_shell)
 	}
 	if (exec_builtin_cmds(cmd, mn_shell))
 	{
-		free_args(cmd->args);
-		free(cmd->path);
-		free(mn_shell->childs);
 		close_pipes(mn_shell);
 		return ;
 	}
