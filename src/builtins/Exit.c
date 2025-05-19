@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 22:12:48 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/18 21:27:49 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:38:56 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	check_exit_cmd(char *input)
 	return (0);
 }
 
-void exit_free(t_shell *mn_shell, int exit_status, int printerror)
+void	exit_free(t_shell *mn_shell, int exit_status, int printerror)
 {
-	if(printerror)
+	if (printerror)
 		perr_name(mn_shell, "exit", "numeric argument required", 2);
 	free_all(NULL, mn_shell);
 	free_env(mn_shell->envp);
@@ -31,8 +31,8 @@ void exit_free(t_shell *mn_shell, int exit_status, int printerror)
 
 int	execute_exit(t_cmd *cmds, t_shell *mn_shell)
 {
-	int		exit_status;
-	int		i;
+	int	exit_status;
+	int	i;
 
 	i = 0;
 	if (cmds->next || !check_exit_cmd(cmds->args[0]))
@@ -43,7 +43,7 @@ int	execute_exit(t_cmd *cmds, t_shell *mn_shell)
 		while (cmds->args[1][i])
 		{
 			if (!ft_isdigit(cmds->args[1][i]))
-				exit_free( mn_shell, 2, 1);
+				exit_free(mn_shell, 2, 1);
 			i++;
 		}
 		if (cmds->args[2])
@@ -52,7 +52,6 @@ int	execute_exit(t_cmd *cmds, t_shell *mn_shell)
 	}
 	else
 		exit_status = mn_shell->last_exit_code;
-	exit_free( mn_shell, exit_status, 0);
-	exit (exit_status);
+	exit_free(mn_shell, exit_status, 0);
+	exit(exit_status);
 }
-

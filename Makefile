@@ -6,14 +6,15 @@
 #    By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 10:57:18 by angnavar          #+#    #+#              #
-#    Updated: 2025/05/18 21:41:23 by angnavar         ###   ########.fr        #
+#    Updated: 2025/05/19 13:54:26 by angnavar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell.out
 
 # Source and object files
-SRC = main.c src/Minishell.c src/Errors.c src/Inits.c \
+SRC = main.c src/Minishell.c src/Inits.c src/signal/signals.c \
+	src/Errors/Errors_00.c src/Errors/Errors_01.c \
 	src/Parse/Parse_input.c src/Parse/Parse_files.c src/Parse/Here_doc.c \
 	src/Parse/Parse_quotes.c src/Parse/Parse_to_cmds.c src/Parse/Parse_env.c \
 	src/Parse/Parse_builtins.c \
@@ -22,8 +23,7 @@ SRC = main.c src/Minishell.c src/Errors.c src/Inits.c \
 	src/Free/Free_shell.c src/Free/Free_input.c \
 	src/builtins/builtins.c src/builtins/builtins_utils.c src/builtins/Echo.c \
 	src/builtins/Exit.c \
-	src/builtins/cd_utils.c src/builtins/export_utils.c \
-	src/signal/signals.c
+	src/builtins/cd_utils.c src/builtins/export_utils.c
 OBJ_DIR = obj
 OBJ = $(SRC:.c=.o)
 OBJ := $(addprefix $(OBJ_DIR)/, $(OBJ))

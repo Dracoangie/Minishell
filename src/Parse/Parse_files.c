@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:07:17 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/18 21:52:41 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:33:07 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	handle_file_open(t_shell *mn_shell, char *file, int flags, int *fd)
 	if (*fd < 0)
 	{
 		if (errno == ENOENT)
-			return (perr_name(mn_shell, file,
-				"No such file or directory", 1), 0);
+			return (perr_name(mn_shell, file, "No such file or directory", 1),
+				0);
 		else if (errno == EACCES)
 			return (perr_name(mn_shell, file, "Permission denied", 1), 0);
 		else
@@ -48,11 +48,11 @@ static int	is_redirection_case(t_shell *mn, t_cmd *cmd, int *i)
 {
 	int	fd;
 
-	if(!cmd->args[*i + 1])
+	if (!cmd->args[*i + 1])
 		return (0);
 	if (cmd->args[*i][0] == '>' && cmd->args[*i][1] == '>')
 		fd = handle_file_open(mn, cmd->args[*i + 1],
-			O_WRONLY | O_CREAT | O_APPEND, &cmd->output_fd);
+				O_WRONLY | O_CREAT | O_APPEND, &cmd->output_fd);
 	else if (cmd->args[*i][0] == '<' && cmd->args[*i][1] == '<')
 	{
 		fd = here_doc(cmd->args[*i + 1], mn);
@@ -60,11 +60,10 @@ static int	is_redirection_case(t_shell *mn, t_cmd *cmd, int *i)
 			cmd->input_fd = fd;
 	}
 	else if (cmd->args[*i][0] == '<' && cmd->args[*i][1] == '\0')
-		fd = handle_file_open(mn, cmd->args[*i + 1],
-			O_RDONLY, &cmd->input_fd);
+		fd = handle_file_open(mn, cmd->args[*i + 1], O_RDONLY, &cmd->input_fd);
 	else if (cmd->args[*i][0] == '>')
 		fd = handle_file_open(mn, cmd->args[*i + 1],
-			O_WRONLY | O_CREAT | O_TRUNC, &cmd->output_fd);
+				O_WRONLY | O_CREAT | O_TRUNC, &cmd->output_fd);
 	else
 		return (0);
 	if (fd == 0)
@@ -74,7 +73,6 @@ static int	is_redirection_case(t_shell *mn, t_cmd *cmd, int *i)
 
 static int	handle_command_file(t_shell *mn, t_cmd *cmd, int *i)
 {
-	
 	if (cmd->args[*i][0] == '-')
 	{
 		(*i)++;
@@ -93,7 +91,7 @@ static int	handle_command_file(t_shell *mn, t_cmd *cmd, int *i)
 int	parse_files(t_shell *mn, t_cmd *cmd, t_cmd *first)
 {
 	int	i;
-	int aux;
+	int	aux;
 
 	i = 1;
 	while (cmd->args[i])
@@ -102,12 +100,12 @@ int	parse_files(t_shell *mn, t_cmd *cmd, t_cmd *first)
 		if (aux == -1)
 			return (0);
 		else if (aux == 1)
-			continue;
+			continue ;
 		aux = handle_command_file(mn, cmd, &i);
 		if (aux == -1)
 			return (0);
 		else if (aux == 1)
-			continue;
+			continue ;
 		else
 			i++;
 	}

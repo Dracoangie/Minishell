@@ -6,17 +6,19 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 14:53:07 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/15 01:05:35 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:38:40 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
-char *get_env_value(const char *name, char **envp)
+char	*get_env_value(const char *name, char **envp)
 {
-	int len = ft_strlen(name);
-	int i = 0;
+	int	len;
+	int	i;
 
+	len = ft_strlen(name);
+	i = 0;
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
@@ -26,14 +28,13 @@ char *get_env_value(const char *name, char **envp)
 	return (NULL);
 }
 
-char *expand_arg(const char *arg, t_shell *mn_shell)
+char	*expand_arg(const char *arg, t_shell *mn_shell)
 {
-	char *val;
-	const char *varname;
+	char		*val;
+	const char	*varname;
 
 	if (!arg)
 		return (NULL);
-
 	if (arg[0] != '$')
 		return (NULL);
 	if (ft_strcmp(arg, "$?") == 0)
@@ -46,11 +47,12 @@ char *expand_arg(const char *arg, t_shell *mn_shell)
 		return (ft_strdup(""));
 }
 
-int execute_echo(t_cmd *cmds, t_shell *mn_shell)
+int	execute_echo(t_cmd *cmds, t_shell *mn_shell)
 {
-	int i = 1;
-	char *expanded;
+	int		i;
+	char	*expanded;
 
+	i = 1;
 	while (cmds->args[i])
 	{
 		expanded = expand_arg(cmds->args[i], mn_shell);

@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/18 21:53:00 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:33:21 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	parse_redirect(t_cmd *cmds, t_shell *mn_shell)
 			return (perr_redir(mn_shell, "|"), 1);
 		while (j > 0)
 		{
-			if (ft_argstr(redirs, aux->args[j]) != -1
-				&& ft_argstr(redirs, aux->args[j - 1]) != -1)
+			if (ft_argstr(redirs, aux->args[j]) != -1 && ft_argstr(redirs,
+					aux->args[j - 1]) != -1)
 				return (perr_redir(mn_shell, (char *)aux->args[j]), 1);
 			j--;
 		}

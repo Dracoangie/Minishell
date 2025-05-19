@@ -6,35 +6,48 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:26:05 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/18 20:18:07 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:05:57 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
+char	*update_shlvl(const char *env_var)
+{
+	int		lvl;
+	char	*new_lvl;
+	char	*shlvl;
+
+	lvl = ft_atoi(env_var + 6);
+	new_lvl = ft_itoa(lvl + 1);
+	if (!new_lvl)
+		return (NULL);
+	shlvl = ft_strjoin("SHLVL=", new_lvl);
+	free(new_lvl);
+	return (shlvl);
+}
+
 char	**init_env(char **env)
 {
-	int		count = 0;
-	int		i = -1;
+	int		count;
+	int		i;
 	char	**env_copy;
 
+	count = 0;
 	while (env[count])
 		count++;
 	env_copy = malloc((count + 1) * sizeof(char *));
 	if (!env_copy)
 		return (NULL);
+	i = -1;
 	while (++i < count)
 	{
 		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
-		{
-			int lvl = ft_atoi(env[i] + 6);
-			char *new_lvl = ft_itoa(lvl + 1);
-			char *shlvl = ft_strjoin("SHLVL=", new_lvl);
-			free(new_lvl);
-			env_copy[i] = shlvl;
-		}
+			env_copy[i] = update_shlvl(env[i]);
 		else
 			env_copy[i] = ft_strdup(env[i]);
+		if (!env_copy[i])
+			return (NULL);
 	}
 	env_copy[count] = NULL;
 	return (env_copy);

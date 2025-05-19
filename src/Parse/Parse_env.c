@@ -6,16 +6,16 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 22:34:49 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/16 22:54:03 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:42:02 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
-char *expand_args(const char *arg, t_shell *mn_shell)
+char	*expand_args(const char *arg, t_shell *mn_shell)
 {
-	char *val;
-	const char *varname;
+	char		*val;
+	const char	*varname;
 
 	if (!arg)
 		return (NULL);
@@ -35,14 +35,21 @@ char *expand_args(const char *arg, t_shell *mn_shell)
 		return (ft_strdup(""));
 }
 
-char *get_expand_arg(const char *str, t_shell *mn_shell)
+char	*get_expand_arg(const char *str, t_shell *mn_shell)
 {
-	int i = 0;
-	int start = 0;
-	char *result = ft_strdup("");
-	char *expanded = NULL;
-	char quote = '\0';
+	int		i;
+	int		start;
+	char	*result;
+	char	*expanded;
+	char	quote;
+	char	*tmp;
+	char	*tmp2;
 
+	i = 0;
+	start = 0;
+	result = ft_strdup("");
+	expanded = NULL;
+	quote = '\0';
 	while (str[i])
 	{
 		start = i;
@@ -52,13 +59,13 @@ char *get_expand_arg(const char *str, t_shell *mn_shell)
 				quote = str[i];
 			else if (quote == str[i])
 				quote = '\0';
-			char *tmp = ft_substr(str, i, 1);
-			char *tmp2 = result;
+			tmp = ft_substr(str, i, 1);
+			tmp2 = result;
 			result = ft_strjoin(result, tmp);
 			free(tmp2);
 			free(tmp);
 			i++;
-			continue;
+			continue ;
 		}
 		if (str[i] == '$' && quote != '\'')
 		{
@@ -66,7 +73,7 @@ char *get_expand_arg(const char *str, t_shell *mn_shell)
 			if ((str[i + 1] == '\'' || str[i + 1] == '"') && quote != '"')
 			{
 				i++;
-				continue;
+				continue ;
 			}
 			else if (str[i + 1] == '?')
 				i += 2;
@@ -78,7 +85,7 @@ char *get_expand_arg(const char *str, t_shell *mn_shell)
 			}
 			else
 				i += 2;
-			char *tmp = ft_substr(str, start, i - start);
+			tmp = ft_substr(str, start, i - start);
 			expanded = expand_args(tmp, mn_shell);
 			free(tmp);
 			tmp = result;
@@ -88,35 +95,36 @@ char *get_expand_arg(const char *str, t_shell *mn_shell)
 		}
 		else
 		{
-			while (str[i] &&
-				((quote == '\'' && str[i] != '\'') ||
-				(quote == '"'  && str[i] != '$' && str[i] != '"') ||
-				(quote == '\0' && str[i] != '$' && str[i] != '\'' && str[i] != '"')))
+			while (str[i]
+				&& ((quote == '\'' && str[i] != '\'') || (quote == '"'
+						&& str[i] != '$' && str[i] != '"')
+					|| (quote == '\0' && str[i] != '$' && str[i] != '\''
+						&& str[i] != '"')))
 				i++;
 			if (i > start)
 			{
-				char *tmp = ft_substr(str, start, i - start);
+				tmp = ft_substr(str, start, i - start);
 				if (!tmp)
-					continue;
-				char *tmp2 = result;
+					continue ;
+				tmp2 = result;
 				result = ft_strjoin(result, tmp);
 				free(tmp2);
 				free(tmp);
 			}
 		}
-
 	}
 	return (result);
 }
 
 void	parse_env(t_cmd *cmd, t_shell *mn_shell)
 {
-	int i = 0;
-	char *expanded;
+	int		i;
+	char	*expanded;
 
+	i = 0;
 	while (cmd->args[i])
 	{
-		if(ft_strchr(cmd->args[i], '$'))
+		if (ft_strchr(cmd->args[i], '$'))
 		{
 			expanded = get_expand_arg(cmd->args[i], mn_shell);
 			if (expanded)

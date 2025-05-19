@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:59:14 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/18 21:47:19 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:40:11 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,17 +80,16 @@ int	execute_cd(t_shell *mn_shell, char **args)
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
 		perror("getcwd");
-		return 1;
+		return (1);
 	}
 	oldpwd = ft_strdup(cwd);
-
 	if (args[1] == NULL)
 	{
 		target = get_env_value("HOME", mn_shell->envp);
 		if (target == NULL)
 		{
 			fprintf(stderr, "cd: HOME not set\n");
-			return 1;
+			return (1);
 		}
 	}
 	else if (ft_strcmp(args[1], "-") == 0)
@@ -99,7 +98,7 @@ int	execute_cd(t_shell *mn_shell, char **args)
 		if (target == NULL)
 		{
 			fprintf(stderr, "cd: OLDPWD not set\n");
-			return 1;
+			return (1);
 		}
 		printf("%s\n", target);
 	}
@@ -109,7 +108,7 @@ int	execute_cd(t_shell *mn_shell, char **args)
 	{
 		perror("cd");
 		free(oldpwd);
-		return 1;
+		return (1);
 	}
 	//to do
 	update_env_var(&(mn_shell->envp), "OLDPWD", oldpwd);
@@ -118,7 +117,7 @@ int	execute_cd(t_shell *mn_shell, char **args)
 	else
 		perror("getcwd");
 	free(oldpwd);
-	return 0;
+	return (0);
 }
 
 int	execute_export(t_shell *mn_shell, char **args)
@@ -136,7 +135,7 @@ int	execute_export(t_shell *mn_shell, char **args)
 		{
 			ft_putstr_fd("export: not a valid identifier\n", 2);
 			i++;
-			continue;
+			continue ;
 		}
 		if (equal_pos)
 		{
@@ -150,5 +149,5 @@ int	execute_export(t_shell *mn_shell, char **args)
 			update_env_var(&(mn_shell->envp), args[i], "");
 		i++;
 	}
-	return 0;
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:40:01 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/18 22:31:10 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:35:40 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*check_cmd(t_shell *mn_shell, char	**args)
 
 void	execute_command(t_cmd *cmd, t_shell *mn_shell)
 {
-	if(!cmd->is_builtin)
+	if (!cmd->is_builtin)
 	{
 		if (execve(cmd->path, cmd->args, mn_shell->envp) == -1)
 		{

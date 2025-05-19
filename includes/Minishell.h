@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/18 21:47:14 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:36:02 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int		execute_echo(t_cmd *cmds, t_shell *mn_shell);
 char	**execute_unset(char **envp, char *command);
 int		execute_exit(t_cmd *cmds, t_shell *mn_shell);
 int		execute_cd(t_shell *mn_shell, char **args);
-char 	*get_env_value(const char *name, char **envp);
+char	*get_env_value(const char *name, char **envp);
 int		execute_export(t_shell *mn_shell, char **args);
 
 //Builtins utils
@@ -141,6 +141,5 @@ char	*get_env_value(const char *name, char **envp);
 char	**delete_env_var(char **envp, char *key);
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 int		is_valid_identifier(const char *str);
-
 
 #endif

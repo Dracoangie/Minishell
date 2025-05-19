@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 14:13:55 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/14 14:36:36 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:40:56 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,33 +49,34 @@ int	tcmd_count(const char *s)
 	quote = '\0';
 	while (s[i])
 	{
-		if ((s[i] == '"' || s[i] == '\'') ||
-			((s[i] == '<' || s[i] == '>') && quote == '\0') ||
-			(s[i] != ' ' && s[i] != '"' && s[i] != '\'' && quote == '\0'))
+		if ((s[i] == '"' || s[i] == '\'')
+			|| ((s[i] == '<' || s[i] == '>') && quote == '\0')
+			|| (s[i] != ' ' && s[i] != '"' && s[i] != '\'' && quote == '\0'))
 			result++;
 		skip_token(s, &i, &quote);
 	}
 	return (result);
 }
 
-static int	extract_token_with_quotes(const char *s, char **result, int *i, int *j, char c)
+static int	extract_token_with_quotes(const char *s, char **result, int *i,
+		int *j)
 {
 	int		start;
-	char	quote;
+	char	q;
 
-	quote = '\0';
+	q = '\0';
 	start = *i;
 	while (s[*i])
 	{
 		if ((s[*i] == '\'' || s[*i] == '"'))
 		{
-			if (quote == '\0')
-				quote = s[*i];
-			else if (quote == s[*i])
-				quote = '\0';
+			if (q == '\0')
+				q = s[*i];
+			else if (q == s[*i])
+				q = '\0';
 		}
-		else if (quote == '\0' && (s[*i] == c || s[*i] == '<' || s[*i] == '>'))
-			break;
+		else if (q == '\0' && (s[*i] == ' ' || s[*i] == '<' || s[*i] == '>'))
+			break ;
 		(*i)++;
 	}
 	if (*i > start)
@@ -87,7 +88,8 @@ static int	extract_token_with_quotes(const char *s, char **result, int *i, int *
 	return (1);
 }
 
-static int	extract_redirection_token(const char *s, char **result, int *i, int *j)
+static int	extract_redirection_token(const char *s, char **result, int *i,
+		int *j)
 {
 	int	start;
 
@@ -121,8 +123,8 @@ char	**ft_split_with_quotes(const char *s, char c)
 		while (s[i] == c)
 			i++;
 		if (!s[i])
-			break;
-		if (!extract_token_with_quotes(s, result, &i, &j, c))
+			break ;
+		if (!extract_token_with_quotes(s, result, &i, &j))
 			return (free_args(result), NULL);
 		if (!extract_redirection_token(s, result, &i, &j))
 			return (free_args(result), NULL);

@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:42:42 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/16 22:40:41 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:36:13 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,15 @@ void	ft_print_cmds(t_cmd *cmd_list)
 
 char	*ft_remove_quotes(const char *str)
 {
-	int		i = 0;
-	int		j = 0;
-	char	quote = '\0';
-	char	*new_str = malloc(strlen(str) + 1);
+	int		i;
+	int		j;
+	char	quote;
+	char	*new_str;
 
+	i = 0;
+	j = 0;
+	quote = '\0';
+	new_str = malloc(strlen(str) + 1);
 	if (!new_str)
 		return (NULL);
 	while (str[i])
@@ -60,13 +64,13 @@ char	*ft_remove_quotes(const char *str)
 		{
 			quote = str[i];
 			i++;
-			continue;
+			continue ;
 		}
 		if (str[i] == quote)
 		{
 			quote = '\0';
 			i++;
-			continue;
+			continue ;
 		}
 		new_str[j++] = str[i++];
 	}
