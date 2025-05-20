@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 22:34:49 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/20 22:50:18 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 01:17:03 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,12 @@ void	parse_env(t_cmd *cmd, t_shell *mn_shell)
 	i = 0;
 	while (cmd->args[i])
 	{
-		if (ft_strchr(cmd->args[i], '$'))
+		if (ft_strcmp(cmd->args[i], "~") == 0)
+		{
+			free(cmd->args[i]);
+			cmd->args[i] = get_expand_arg("$HOME", mn_shell);
+		}
+		else if (ft_strchr(cmd->args[i], '$'))
 		{
 			expanded = get_expand_arg(cmd->args[i], mn_shell);
 			if (expanded)

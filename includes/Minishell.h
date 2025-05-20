@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/20 22:22:52 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 01:18:05 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	parse_env(t_cmd *cmd, t_shell *mn_shell);
 void	parse_quotes(t_cmd *cmd);
 int		parse_redirect(t_cmd *cmd, t_shell *mn_shell);
 int		parse_builtins(t_cmd *cmds);
+void	parse_redirs(t_shell *mn, t_cmd *cmd);
 int		check_exit_cmd(char *input);
 int		here_doc(char *delimiter, t_shell *mn_shell);
 char	**ft_split_with_quotes(const char *s, char c);

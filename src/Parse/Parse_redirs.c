@@ -6,9 +6,14 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 22:21:31 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/20 22:21:42 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 01:23:54 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
+void	parse_redirs(t_shell *mn, t_cmd *cmd)
+{
+	(void)mn;
+	(void)cmd;
+}
