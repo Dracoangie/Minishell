@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 00:02:36 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/20 00:07:56 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:50:14 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ int	handle_expnd(const char *str, int i, t_shell *mn_shell,
 	char	*tmp2;
 
 	start = i;
-	if ((str[i + 1] == '\'' || str[i + 1] == '"'))
-		return (i + 1);
-	else if (str[i + 1] == '?')
+	if (str[i + 1] == '?')
 		i += 2;
 	else if (str[i + 1] != '$')
 	{

@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:59:14 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/20 21:58:31 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:09:16 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	execute_env(char **envp, char *command)
 
 void	execute_unset(t_shell *mn_shell, t_cmd *command)
 {
-	int		i;
+	int	i;
 
 	if (!command)
 		return ;
@@ -61,7 +61,6 @@ void	execute_unset(t_shell *mn_shell, t_cmd *command)
 		i++;
 	}
 }
-
 
 int	execute_cd(t_shell *mn_shell, char **args)
 {
@@ -82,8 +81,8 @@ int	execute_cd(t_shell *mn_shell, char **args)
 
 int	execute_export(t_shell *mn_shell, char **args)
 {
-	int	i;
-	char *equal_pos;
+	int		i;
+	char	*equal_pos;
 
 	i = 1;
 	while (args[i])

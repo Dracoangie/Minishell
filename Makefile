@@ -6,7 +6,7 @@
 #    By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 10:57:18 by angnavar          #+#    #+#              #
-#    Updated: 2025/05/20 00:16:18 by angnavar         ###   ########.fr        #
+#    Updated: 2025/05/20 22:21:58 by angnavar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC = main.c src/Minishell.c src/Inits.c src/signal/signals.c \
 	src/Parse/Parse_input.c src/Parse/Parse_files.c src/Parse/Here_doc.c \
 	src/Parse/Parse_quotes.c src/Parse/Parse_to_cmds.c src/Parse/Parse_env.c \
 	src/Parse/Parse_builtins.c src/Parse/Handle_parse_env.c \
+	src/Parse/Parse_redirs.c \
 	src/Exec/Cmds.c  src/Exec/Exec_cmds.c \
 	src/Utils/Utils_0.c src/Utils/Utils_1.c \
 	src/Free/Free_shell.c src/Free/Free_input.c \

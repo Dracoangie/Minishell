@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 22:34:49 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/20 00:11:54 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:50:18 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ char	*expand_args(const char *arg, t_shell *mn_shell)
 	const char	*varname;
 
 	if (!arg)
-		return (NULL);
-	if (arg[0] != '$')
 		return (NULL);
 	if (arg[1] == '\0')
 		return (ft_strdup("$"));

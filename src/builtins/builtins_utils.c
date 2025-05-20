@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 20:27:35 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/20 21:57:30 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:42:14 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,4 +123,5 @@ void	update_env_var(char ***envp, const char *key, const char *value)
 		i++;
 	}
 	*envp = ft_realloc_env(*envp, new_var);
+	free(new_var);
 }
