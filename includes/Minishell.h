@@ -6,7 +6,7 @@
 /*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/20 14:14:59 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:38:56 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	handle_signals(void);
 
 //Builtins
 int		execute_echo(t_cmd *cmds, t_shell *mn_shell);
-char	**execute_unset(char **envp, char *command);
+int		execute_unset(char ***envp, char *command);
 int		execute_cd(t_shell *mn_shell, char **args);
 char 	*get_env_value(const char *name, char **envp);
 int		execute_export(t_shell *mn_shell, char **args);

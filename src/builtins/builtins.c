@@ -6,7 +6,7 @@
 /*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:59:14 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/20 14:20:28 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:37:40 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,27 +48,27 @@ void	execute_env(char **envp, char *command)
 	}
 }
 
-char	**execute_unset(char **envp, char *command)
+int	execute_unset(char ***envp, char *command)
 {
 	int		i;
 	char	**out;
 
 	out = ft_split(command, ' ');
 	if (!out)
-		return (NULL);
+		return (1);
 	if (!out[1])
 	{
 		free_args(out);
-		return (envp);
+		return (0);
 	}
 	i = 1;
 	while (out[i])
 	{
-		envp = delete_env_var(envp, out[i]);
+		*envp = delete_env_var(*envp, out[i]);
 		i++;
 	}
 	free_args(out);
-	return (envp);
+	return (0);
 }
 
 int	execute_cd(t_shell *mn_shell, char **args)
@@ -81,7 +81,7 @@ int	execute_cd(t_shell *mn_shell, char **args)
 	oldpwd = ft_strdup(cwd);
 	if (!oldpwd)
 		return (perror("malloc"), 1);
-	if (!args[1])
+	if (!args[1] || ft_strcmp(args[1], "~") == 0)
 		return (cd_to_home(mn_shell, oldpwd));
 	if (ft_strcmp(args[1], "-") == 0)
 		return (cd_to_oldpwd(mn_shell, oldpwd));
