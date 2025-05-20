@@ -6,7 +6,7 @@
 /*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/16 02:11:26 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:10:57 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	builtin_cmds(t_cmd *cmds, t_shell *mn_shell)
 		return (0);
 	}
 	else if (ft_strcmp(cmds->args[0], "unset") == 0)
-		return (execute_unset(mn_shell->envp, cmds->args[0]), 0);
+		return (execute_cd(mn_shell, cmds->args), 1);
 	else if (ft_strcmp(cmds->args[0], "env") == 0)
 		return (0);
 	return (0);
