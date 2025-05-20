@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:59:14 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/20 12:21:49 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:58:31 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,75 +66,39 @@ void	execute_unset(t_shell *mn_shell, t_cmd *command)
 int	execute_cd(t_shell *mn_shell, char **args)
 {
 	char	cwd[PATH_MAX];
-	char	*target;
 	char	*oldpwd;
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
-	{
-		perror("getcwd");
-		return (1);
-	}
+		return (perror("getcwd"), 1);
 	oldpwd = ft_strdup(cwd);
-	if (args[1] == NULL)
-	{
-		target = get_env_value("HOME", mn_shell->envp);
-		if (target == NULL)
-		{
-			fprintf(stderr, "cd: HOME not set\n");
-			return (1);
-		}
-	}
-	else if (ft_strcmp(args[1], "-") == 0)
-	{
-		target = get_env_value("OLDPWD", mn_shell->envp);
-		if (target == NULL)
-		{
-			fprintf(stderr, "cd: OLDPWD not set\n");
-			return (1);
-		}
-		printf("%s\n", target);
-	}
-	else
-		target = args[1];
-	if (chdir(target) != 0)
-	{
-		perror("cd");
-		free(oldpwd);
-		return (1);
-	}
-	//to do
-	update_env_var(&(mn_shell->envp), "OLDPWD", oldpwd);
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		update_env_var(&(mn_shell->envp), "PWD", cwd);
-	else
-		perror("getcwd");
-	free(oldpwd);
-	return (0);
+	if (!oldpwd)
+		return (perror("malloc"), 1);
+	if (!args[1] || ft_strcmp(args[1], "~") == 0)
+		return (cd_to_home(mn_shell, oldpwd));
+	if (ft_strcmp(args[1], "-") == 0)
+		return (cd_to_oldpwd(mn_shell, oldpwd));
+	return (cd_to_path(mn_shell, args[1], oldpwd));
 }
 
 int	execute_export(t_shell *mn_shell, char **args)
 {
-	int		i;
-	char	*key;
-	char	*value;
-	char	*equal_pos;
+	int	i;
+	char *equal_pos;
 
 	i = 1;
 	while (args[i])
 	{
-		equal_pos = ft_strchr(args[i], '=');
 		if (!is_valid_identifier(args[i]))
 		{
 			ft_putstr_fd("export: not a valid identifier\n", 2);
 			i++;
 			continue ;
 		}
+		equal_pos = ft_strchr(args[i], '=');
 		if (equal_pos)
 		{
 			*equal_pos = '\0';
-			key = args[i];
-			value = equal_pos + 1;
-			update_env_var(&(mn_shell->envp), key, value);
+			update_env_var(&(mn_shell->envp), args[i], equal_pos + 1);
 			*equal_pos = '=';
 		}
 		else if (!get_env_value(args[i], mn_shell->envp))

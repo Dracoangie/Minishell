@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/20 12:19:04 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:58:39 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ void	handle_signals(void);
 //Builtins
 int		execute_echo(t_cmd *cmds, t_shell *mn_shell);
 void	execute_unset(t_shell *mn_shell, t_cmd *command);
-int		execute_exit(t_cmd *cmds, t_shell *mn_shell);
 int		execute_cd(t_shell *mn_shell, char **args);
 char	*get_env_value(const char *name, char **envp);
 int		execute_export(t_shell *mn_shell, char **args);
@@ -143,5 +142,8 @@ char	*get_env_value(const char *name, char **envp);
 char	**delete_env_var(char **envp, char *key);
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 int		is_valid_identifier(const char *str);
+int		cd_to_home(t_shell *mn_shell, char *oldpwd);
+int		cd_to_oldpwd(t_shell *mn_shell, char *oldpwd);
+int		cd_to_path(t_shell *mn_shell, char *path, char *oldpwd);
 
 #endif
