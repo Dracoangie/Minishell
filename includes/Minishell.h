@@ -6,7 +6,7 @@
 /*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/20 00:17:47 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:14:59 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,5 @@ int		is_valid_identifier(const char *str);
 int		cd_to_home(t_shell *mn_shell, char *oldpwd);
 int		cd_to_oldpwd(t_shell *mn_shell, char *oldpwd);
 int		cd_to_path(t_shell *mn_shell, char *path, char *oldpwd);
-
 
 #endif

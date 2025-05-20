@@ -6,7 +6,7 @@
 /*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:59:14 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/20 00:52:08 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:20:28 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,27 +90,23 @@ int	execute_cd(t_shell *mn_shell, char **args)
 
 int	execute_export(t_shell *mn_shell, char **args)
 {
-	int		i;
-	char	*key;
-	char	*value;
-	char	*equal_pos;
+	int	i;
+	char *equal_pos;
 
 	i = 1;
 	while (args[i])
 	{
-		equal_pos = ft_strchr(args[i], '=');
 		if (!is_valid_identifier(args[i]))
 		{
 			ft_putstr_fd("export: not a valid identifier\n", 2);
 			i++;
 			continue ;
 		}
+		equal_pos = ft_strchr(args[i], '=');
 		if (equal_pos)
 		{
 			*equal_pos = '\0';
-			key = args[i];
-			value = equal_pos + 1;
-			update_env_var(&(mn_shell->envp), key, value);
+			update_env_var(&(mn_shell->envp), args[i], equal_pos + 1);
 			*equal_pos = '=';
 		}
 		else if (!get_env_value(args[i], mn_shell->envp))
