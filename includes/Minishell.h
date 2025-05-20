@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/19 13:36:02 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/20 00:09:52 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,9 @@ int		parse_builtins(t_cmd *cmds);
 int		check_exit_cmd(char *input);
 int		here_doc(char *delimiter, t_shell *mn_shell);
 char	**ft_split_with_quotes(const char *s, char c);
+int		handle_quotes(const char *str, int i, char *quote, char **result);
+int		handle_expnd(const char *str, int i, t_shell *mn_shell, char **result);
+char	*expand_args(const char *arg, t_shell *mn_shell);
 
 //Utils
 int		ft_strcmp(const char *s1, const char *s2);
@@ -106,7 +109,6 @@ int		ft_argstr(const char **args, const char *str);
 int		ft_count_args(char **args);
 char	*ft_remove_quotes(const char *str);
 int		ft_fd_null(t_shell *mn_shell);
-int		ft_first_cmd(t_cmd *cmds, t_cmd *current);
 
 //Commands
 char	*check_cmd(t_shell *mn_shell, char	**args);

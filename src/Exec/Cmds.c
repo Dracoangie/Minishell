@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:40:01 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/19 15:35:40 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 23:46:55 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*check_cmd(t_shell *mn_shell, char	**args)
 	if (!path || access(path, X_OK) != 0)
 	{
 		write(2, args[0], ft_strlen(args[0]));
-		perr_shll(mn_shell, ": command not found", 127);
+		perr_shll(mn_shell, ": command not found", 2);
 		free(path);
 		mn_shell->last_exit_code = 127;
 		return (NULL);
@@ -79,14 +79,14 @@ void	execute_command(t_cmd *cmd, t_shell *mn_shell)
 	{
 		if (execve(cmd->path, cmd->args, mn_shell->envp) == -1)
 		{
-			perr_shll(mn_shell, "execve error", EXIT_FAILURE);
-			mn_shell->last_exit_code = EXIT_FAILURE;
+			perr_name(mn_shell, cmd->args[0], "permission denied", 126);
+			mn_shell->last_exit_code = 126;
 		}
 		else
 			mn_shell->last_exit_code = EXIT_SUCCESS;
 		return ;
 	}
-	if (exec_builtin_cmds(cmd, mn_shell))
+	if (exec_builtin_cmds(cmd, mn_shell) != 0)
 	{
 		close_pipes(mn_shell);
 		return ;

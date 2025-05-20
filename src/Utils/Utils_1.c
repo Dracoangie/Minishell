@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:42:42 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/19 15:36:13 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/19 23:55:50 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,21 @@ void	ft_print_cmds(t_cmd *cmd_list)
 	}
 }
 
+int	ft_has_quote(char c, char *quote)
+{
+	if (*quote == '\0' && (c == '\'' || c == '"'))
+	{
+		*quote = c;
+		return (1);
+	}
+	else if (c == *quote)
+	{
+		*quote = '\0';
+		return (1);
+	}
+	return (0);
+}
+
 char	*ft_remove_quotes(const char *str)
 {
 	int		i;
@@ -60,15 +75,8 @@ char	*ft_remove_quotes(const char *str)
 		return (NULL);
 	while (str[i])
 	{
-		if ((str[i] == '\'' || str[i] == '"') && quote == '\0')
+		if (ft_has_quote(str[i], &quote))
 		{
-			quote = str[i];
-			i++;
-			continue ;
-		}
-		if (str[i] == quote)
-		{
-			quote = '\0';
 			i++;
 			continue ;
 		}
@@ -91,11 +99,4 @@ int	ft_fd_null(t_shell *mn_shell)
 	}
 	dup2(fd_null, STDOUT_FILENO);
 	return (fd_null);
-}
-
-int	ft_first_cmd(t_cmd *cmds, t_cmd *current)
-{
-	if (cmds == current)
-		return (1);
-	return (0);
 }

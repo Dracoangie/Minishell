@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 22:34:49 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/19 15:42:02 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/20 00:11:54 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,83 +35,49 @@ char	*expand_args(const char *arg, t_shell *mn_shell)
 		return (ft_strdup(""));
 }
 
-char	*get_expand_arg(const char *str, t_shell *mn_shell)
+int	lit_seg(const char *str, int i, char quote, char **result)
 {
-	int		i;
 	int		start;
-	char	*result;
-	char	*expanded;
-	char	quote;
 	char	*tmp;
 	char	*tmp2;
 
+	start = i;
+	while (str[i] && ((quote == '\'' && str[i] != '\'') || (quote == '"'
+				&& str[i] != '$' && str[i] != '"') || (quote == '\0'
+				&& str[i] != '$' && str[i] != '\'' && str[i] != '"')))
+		i++;
+	if (i > start)
+	{
+		tmp = ft_substr(str, start, i - start);
+		if (!tmp)
+			return (i);
+		tmp2 = *result;
+		*result = ft_strjoin(*result, tmp);
+		free(tmp2);
+		free(tmp);
+	}
+	return (i);
+}
+
+char	*get_expand_arg(const char *str, t_shell *mn_shell)
+{
+	int		i;
+	char	quote;
+	char	*result;
+
 	i = 0;
-	start = 0;
-	result = ft_strdup("");
-	expanded = NULL;
 	quote = '\0';
+	result = ft_strdup("");
+	if (!result)
+		return (NULL);
 	while (str[i])
 	{
-		start = i;
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			if (!quote)
-				quote = str[i];
-			else if (quote == str[i])
-				quote = '\0';
-			tmp = ft_substr(str, i, 1);
-			tmp2 = result;
-			result = ft_strjoin(result, tmp);
-			free(tmp2);
-			free(tmp);
-			i++;
-			continue ;
-		}
-		if (str[i] == '$' && quote != '\'')
-		{
-			start = i;
-			if ((str[i + 1] == '\'' || str[i + 1] == '"') && quote != '"')
-			{
-				i++;
-				continue ;
-			}
-			else if (str[i + 1] == '?')
-				i += 2;
-			else if (str[i + 1] != '$')
-			{
-				i++;
-				while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
-					i++;
-			}
-			else
-				i += 2;
-			tmp = ft_substr(str, start, i - start);
-			expanded = expand_args(tmp, mn_shell);
-			free(tmp);
-			tmp = result;
-			result = ft_strjoin(result, expanded);
-			free(tmp);
-			free(expanded);
-		}
+		if ((str[i] == '\'' || str[i] == '"'))
+			i = handle_quotes(str, i, &quote, &result);
+		else if (str[i] == '$' && quote != '\'')
+			i = handle_expnd(str, i, mn_shell, &result);
 		else
-		{
-			while (str[i]
-				&& ((quote == '\'' && str[i] != '\'') || (quote == '"'
-						&& str[i] != '$' && str[i] != '"')
-					|| (quote == '\0' && str[i] != '$' && str[i] != '\''
-						&& str[i] != '"')))
-				i++;
-			if (i > start)
-			{
-				tmp = ft_substr(str, start, i - start);
-				if (!tmp)
-					continue ;
-				tmp2 = result;
-				result = ft_strjoin(result, tmp);
-				free(tmp2);
-				free(tmp);
-			}
-		}
+			i = lit_seg(str, i, quote, &result);
 	}
 	return (result);
 }
