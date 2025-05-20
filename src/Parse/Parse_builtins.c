@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 22:08:20 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/19 23:22:44 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/20 12:21:41 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	exec_builtin_cmds(t_cmd *cmds, t_shell *mn_shell)
 		return (mn_shell->last_exit_code = execute_export(mn_shell, cmds->args)
 			, mn_shell->last_exit_code);
 	else if (ft_strcmp(cmds->args[0], "unset") == 0)
-		return (execute_unset(mn_shell->envp, cmds->args[0]), 1);
+		return (execute_unset(mn_shell, cmds), 0);
 	return (0);
 }
 

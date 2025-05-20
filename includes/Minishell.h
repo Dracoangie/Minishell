@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/20 00:09:52 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/20 12:19:04 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	handle_signals(void);
 
 //Builtins
 int		execute_echo(t_cmd *cmds, t_shell *mn_shell);
-char	**execute_unset(char **envp, char *command);
+void	execute_unset(t_shell *mn_shell, t_cmd *command);
 int		execute_exit(t_cmd *cmds, t_shell *mn_shell);
 int		execute_cd(t_shell *mn_shell, char **args);
 char	*get_env_value(const char *name, char **envp);
