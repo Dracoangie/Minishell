@@ -6,7 +6,7 @@
 /*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:59:14 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/21 00:47:49 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/21 03:43:32 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,27 +81,17 @@ int	execute_cd(t_shell *mn_shell, char **args)
 
 int	execute_export(t_shell *mn_shell, char **args)
 {
-	int		i;
-	char	*equal_pos;
+	int	i;
 
 	i = 1;
+	if (!args[1])
+	{
+		print_sorted_env(mn_shell->envp);
+		return (mn_shell->last_exit_code);
+	}
 	while (args[i])
 	{
-		if (!is_valid_identifier(args[i]))
-		{
-			perr_export(mn_shell, args[i]);
-			i++;
-			continue ;
-		}
-		equal_pos = ft_strchr(args[i], '=');
-		if (equal_pos)
-		{
-			*equal_pos = '\0';
-			update_env_var(&(mn_shell->envp), args[i], equal_pos + 1);
-			*equal_pos = '=';
-		}
-		else if (!get_env_value(args[i], mn_shell->envp))
-			update_env_var(&(mn_shell->envp), args[i], "");
+		handle_export_arg(mn_shell, args[i]);
 		i++;
 	}
 	return (mn_shell->last_exit_code);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 20:27:35 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/20 22:42:14 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 03:47:31 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	update_env_var(char ***envp, const char *key, const char *value)
 	int		len;
 
 	new_var = ft_strjoin3(key, "=", value);
-	len	= ft_strlen(key);
+	len = ft_strlen(key);
 	env = *envp;
 	i = 0;
 	while (env[i])

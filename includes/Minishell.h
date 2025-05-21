@@ -6,7 +6,7 @@
 /*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/21 01:06:21 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/21 03:41:05 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void	parse_env(t_cmd *cmd, t_shell *mn_shell);
 void	parse_quotes(t_cmd *cmd);
 int		parse_redirect(t_cmd *cmd, t_shell *mn_shell);
 int		parse_builtins(t_cmd *cmds);
+int		parse_redirs(t_shell *mn, t_cmd *cmd);
 int		check_exit_cmd(char *input);
 int		here_doc(char *delimiter, t_shell *mn_shell);
 char	**ft_split_with_quotes(const char *s, char c);
@@ -147,5 +148,6 @@ int		is_valid_identifier(const char *str);
 int		cd_to_home(t_shell *mn_shell, char *oldpwd);
 int		cd_to_oldpwd(t_shell *mn_shell, char *oldpwd);
 int		cd_to_path(t_shell *mn_shell, char *path, char *oldpwd);
-
+void	print_sorted_env(char **envp);
+void	handle_export_arg(t_shell *mn_shell, char *arg);
 #endif
