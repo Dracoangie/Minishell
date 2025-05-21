@@ -56,8 +56,4 @@ dkms.conf
 # Libft or third-party libraries (optional)
 includes/libft/libft.a
 
-# Ignore main.c
-main.c
-main.c
-
 .vscode/

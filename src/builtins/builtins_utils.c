@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 20:27:35 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/21 03:47:31 by kpineda-         ###   ########.fr       */
+/*   Updated: 2025/05/21 04:07:57 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,7 @@ char	**ft_realloc_env(char **envp, char *new_var)
 	}
 	new_env[i] = ft_strdup(new_var);
 	new_env[i + 1] = NULL;
-	free_args(envp);
-	return (new_env);
+	return (free_args(envp), new_env);
 }
 
 void	update_env_var(char ***envp, const char *key, const char *value)

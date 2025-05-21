@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/05/21 03:41:05 by kpineda-         ###   ########.fr       */
-=======
-/*   Updated: 2025/05/21 02:22:21 by angnavar         ###   ########.fr       */
->>>>>>> cfcb6f50baa93aeee5895295a3a39fb5ec6cba08
+/*   Updated: 2025/05/21 04:03:47 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,4 +152,5 @@ int		cd_to_oldpwd(t_shell *mn_shell, char *oldpwd);
 int		cd_to_path(t_shell *mn_shell, char *path, char *oldpwd);
 void	print_sorted_env(char **envp);
 void	handle_export_arg(t_shell *mn_shell, char *arg);
+
 #endif

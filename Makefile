@@ -6,14 +6,14 @@
 #    By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 10:57:18 by angnavar          #+#    #+#              #
-#    Updated: 2025/05/20 22:21:58 by angnavar         ###   ########.fr        #
+#    Updated: 2025/05/21 04:08:28 by angnavar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 # Source and object files
-SRC = main.c src/Minishell.c src/Inits.c src/signal/signals.c \
+SRC = src/main.c src/Minishell.c src/Inits.c src/signal/signals.c \
 	src/Errors/Errors_00.c src/Errors/Errors_01.c \
 	src/Parse/Parse_input.c src/Parse/Parse_files.c src/Parse/Here_doc.c \
 	src/Parse/Parse_quotes.c src/Parse/Parse_to_cmds.c src/Parse/Parse_env.c \
