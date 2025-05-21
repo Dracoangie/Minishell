@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:43:53 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/20 12:22:10 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 00:28:04 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static int	minishell_loop(t_shell *mn_shell)
 	mn_shell->cmds = parse_input(input, mn_shell);
 	if (!mn_shell->cmds)
 		return (free(input), 0);
-	if (execute_exit(mn_shell->cmds, mn_shell) != 0)
-		return (mn_shell->last_exit_code);
+	//if (execute_exit(mn_shell->cmds, mn_shell) != 0)
+	//	return (mn_shell->last_exit_code);
 	mn_shell->n_cmds = count_cmds(mn_shell->cmds);
 	exec_cmds(mn_shell);
 	free_all(input, mn_shell);

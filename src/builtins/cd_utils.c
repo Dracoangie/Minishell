@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:56:34 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/20 22:10:13 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 01:05:29 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	cd_to_home(t_shell *mn_shell, char *oldpwd)
 	}
 	if (chdir(target) != 0)
 	{
-		perror("cd");
+		perr_cd(mn_shell, target);
 		free(oldpwd);
 		return (1);
 	}
@@ -54,7 +54,7 @@ int	cd_to_oldpwd(t_shell *mn_shell, char *oldpwd)
 	printf("%s\n", target);
 	if (chdir(target) != 0)
 	{
-		perror("cd");
+		perr_cd(mn_shell, target);
 		free(oldpwd);
 		return (1);
 	}
@@ -73,7 +73,7 @@ int	cd_to_path(t_shell *mn_shell, char *path, char *oldpwd)
 
 	if (chdir(path) != 0)
 	{
-		perror("cd");
+		perr_cd(mn_shell, path);
 		free(oldpwd);
 		return (1);
 	}

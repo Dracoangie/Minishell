@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/20 22:22:52 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 01:06:21 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int		count_cmds(t_cmd *cmds);
 //Errors
 void	perr_shll(t_shell *shell, char *msg, int err_code);
 void	perr_exit(t_shell *shell, char *msg);
+void	perr_export(t_shell *mn_shell, char *msg);
+void	perr_cd(t_shell *mn_shell, char *msg);
 void	perr_name(t_shell *shell, char *name, char *msg, int err_code);
 void	perr_mem(t_shell *mn_shell);
 void	perr_redir(t_shell *mn_shell, char *msg);

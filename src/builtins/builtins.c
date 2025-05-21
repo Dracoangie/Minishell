@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:59:14 by kpineda-          #+#    #+#             */
-/*   Updated: 2025/05/20 22:09:16 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 00:47:49 by kpineda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	execute_export(t_shell *mn_shell, char **args)
 	{
 		if (!is_valid_identifier(args[i]))
 		{
-			ft_putstr_fd("export: not a valid identifier\n", 2);
+			perr_export(mn_shell, args[i]);
 			i++;
 			continue ;
 		}
@@ -104,5 +104,5 @@ int	execute_export(t_shell *mn_shell, char **args)
 			update_env_var(&(mn_shell->envp), args[i], "");
 		i++;
 	}
-	return (0);
+	return (mn_shell->last_exit_code);
 }
