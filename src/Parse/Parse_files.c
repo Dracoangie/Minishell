@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:07:17 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/21 02:11:37 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 02:22:34 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	parse_files(t_shell *mn, t_cmd *cmd, t_cmd *first)
 	int	i;
 	int	aux;
 
-	i = parse_redirs(mn, cmd);
+	i = parse_redirs(cmd);
 	cmd->has_cmd = i;
 	while (cmd->args[i])
 	{
