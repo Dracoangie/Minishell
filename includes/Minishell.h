@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/21 01:59:07 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 02:10:14 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_cmd
 	char	**args;
 	char	*path;
 	int		is_builtin;
+	int		has_cmd;
 	int		input_fd;
 	int		output_fd;
 }	t_cmd;
@@ -134,6 +135,7 @@ void	execute_unset(t_shell *mn_shell, t_cmd *command);
 int		execute_cd(t_shell *mn_shell, char **args);
 char	*get_env_value(const char *name, char **envp);
 int		execute_export(t_shell *mn_shell, char **args);
+int		execute_exit(t_cmd *cmds, t_shell *mn_shell);
 
 //Builtins utils
 void	update_env_var(char ***envp, const char *key, const char *value);

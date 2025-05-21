@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:07:17 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/21 01:18:15 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 02:11:37 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ int	parse_files(t_shell *mn, t_cmd *cmd, t_cmd *first)
 	int	i;
 	int	aux;
 
-	i = 1;
-	parse_redirs(mn, cmd);
+	i = parse_redirs(mn, cmd);
+	cmd->has_cmd = i;
 	while (cmd->args[i])
 	{
 		aux = is_redirection_case(mn, cmd, &i);

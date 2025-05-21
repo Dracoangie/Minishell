@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 22:21:31 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/21 01:59:10 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 02:11:11 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,21 @@ int	parse_redirs(t_shell *mn, t_cmd *cmd)
 		if ((ft_strcmp(cmd->args[i], "<") == 0 || ft_strcmp(cmd->args[i],
 					">") == 0 || ft_strcmp(cmd->args[i], ">>") == 0
 				|| ft_strcmp(cmd->args[i], "<<") == 0) && cmd->args[i + 1])
-		{
 			i += 2;
-		}
 		else if (cmd->args[i][0] != '<' && cmd->args[i][0] != '>')
-		{
 			break ;
-		}
 		else
 			i++;
 	}
 	if (!cmd->args[i])
 		return (0);
 	if (i == 0)
-		return (1);
+		return (cmd->is_builtin = parse_builtins(cmd), 1);
 	first_cmd = cmd->args[i];
-	j = i;
-	while (j > 0)
-	{
+	j = i +1;
+	while (--j > 0)
 		cmd->args[j] = cmd->args[j - 1];
-		j--;
-	}
 	cmd->args[0] = first_cmd;
+	cmd->is_builtin = parse_builtins(cmd);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:28:32 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/21 01:16:18 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 02:12:25 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_cmd	*parse_input(char *input, t_shell *mn_shell)
 		parse_env(current, mn_shell);
 		if (parse_files(mn_shell, current, cmds) == 0)
 			return (free_cmds(cmds), NULL);
-		if (!current->is_builtin)
+		if (!current->is_builtin && current->has_cmd)
 		{
 			current->path = check_cmd(mn_shell, current->args);
 			if (!current->path)
