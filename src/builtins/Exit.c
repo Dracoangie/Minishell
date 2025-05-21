@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 22:12:48 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/20 01:03:44 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 02:14:29 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	execute_exit(t_cmd *cmds, t_shell *mn_shell)
 	int	exit_status;
 
 	exit_status = 0;
+	if (!cmds->has_cmd)
+		return (0);
 	if (cmds->next || !check_exit_cmd(cmds->args[0]))
 		return (0);
 	ft_putendl_fd("exit", 1);

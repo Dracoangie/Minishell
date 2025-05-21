@@ -6,7 +6,7 @@
 /*   By: angnavar <angnavar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 22:34:49 by angnavar          #+#    #+#             */
-/*   Updated: 2025/05/21 01:17:03 by angnavar         ###   ########.fr       */
+/*   Updated: 2025/05/21 02:02:47 by angnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,4 @@ void	parse_env(t_cmd *cmd, t_shell *mn_shell)
 		i++;
 	}
 	parse_quotes(cmd);
-	cmd->is_builtin = parse_builtins(cmd);
 }

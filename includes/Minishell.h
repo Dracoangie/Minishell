@@ -6,7 +6,11 @@
 /*   By: kpineda- <kpineda-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:18:57 by angnavar          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/21 03:41:05 by kpineda-         ###   ########.fr       */
+=======
+/*   Updated: 2025/05/21 02:22:21 by angnavar         ###   ########.fr       */
+>>>>>>> cfcb6f50baa93aeee5895295a3a39fb5ec6cba08
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +39,7 @@ typedef struct s_cmd
 	char	**args;
 	char	*path;
 	int		is_builtin;
+	int		has_cmd;
 	int		input_fd;
 	int		output_fd;
 }	t_cmd;
@@ -95,7 +100,7 @@ void	parse_env(t_cmd *cmd, t_shell *mn_shell);
 void	parse_quotes(t_cmd *cmd);
 int		parse_redirect(t_cmd *cmd, t_shell *mn_shell);
 int		parse_builtins(t_cmd *cmds);
-int		parse_redirs(t_shell *mn, t_cmd *cmd);
+int		parse_redirs(t_cmd *cmd);
 int		check_exit_cmd(char *input);
 int		here_doc(char *delimiter, t_shell *mn_shell);
 char	**ft_split_with_quotes(const char *s, char c);
@@ -136,6 +141,7 @@ void	execute_unset(t_shell *mn_shell, t_cmd *command);
 int		execute_cd(t_shell *mn_shell, char **args);
 char	*get_env_value(const char *name, char **envp);
 int		execute_export(t_shell *mn_shell, char **args);
+int		execute_exit(t_cmd *cmds, t_shell *mn_shell);
 
 //Builtins utils
 void	update_env_var(char ***envp, const char *key, const char *value);
